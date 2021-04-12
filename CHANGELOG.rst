@@ -1,6 +1,8 @@
 Changelog
 =========
 
-v0.1.0
+v0.5.0
 ------
-*  initial checkin
+*  initial check-in
+*  basic functionality for Ronchi tests
+*  basic functionality for Foucault knife edge tests
