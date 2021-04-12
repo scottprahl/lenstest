@@ -1,0 +1,9 @@
+.DS_Store
+*.pyc
+lenstest/__pycache__/
+dist/*
+lenstest.egg-info/
+docs/.ipynb_checkpoints/
+docs/_build/
+docs/api/
+.ipynb_checkpoints
