@@ -20,6 +20,10 @@ rstcheck:
 	-rstcheck docs/changelog.rst
 	-rstcheck --ignore-directives automodule docs/lenstest.rst
 
+notecheck:
+	make clean
+	pytest --verbose -n 4 test_all_notebooks.py
+
 html:
 	$(SPHINXBUILD) -b html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
 
@@ -27,14 +31,13 @@ clean:
 	rm -rf dist
 	rm -rf lenstest.egg-info
 	rm -rf lenstest/__pycache__
-	rm -rf docs/_build/*
-	rm -rf docs/api/*
-	rm -rf docs/_build/.buildinfo
-	rm -rf docs/_build/.doctrees
+	rm -rf docs/_build
+	rm -rf docs/api
 	rm -rf .tox
+	rm -rf __pycache__
 
 rcheck:
-	make clean
+	make notecheck
 	make rstcheck
 	make pycheck
 	touch docs/*ipynb
