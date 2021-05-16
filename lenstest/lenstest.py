@@ -14,7 +14,7 @@ __all__ = ('XY_test_points',
            'draw_circle',
            'sagitta')
 
-def sagitta(RoC,conic,X,Y):
+def sagitta(RoC,conic,X,Y,A1=0):
     """
     Calculate sagitta for conic surface at points X,Y.
 
@@ -45,6 +45,8 @@ def sagitta(RoC,conic,X,Y):
     # find the x value where the ray passes through the Ronchi ruling
     Pr_sqr = X*X + Y*Y
     heights = Pr_sqr/(RoC+np.sqrt(RoC*RoC-(1+conic)*Pr_sqr))
+    heights += A1*Pr_sqr**2
+#    print(A1, X[1]**2+Y[1]**2,heights[1])
     return heights
 
 def draw_circle(R,X0=0,Y0=0,color='black'):
