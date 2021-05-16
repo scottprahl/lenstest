@@ -3,14 +3,16 @@ SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = docs
 BUILDDIR      = docs/_build
 
-pycheck:
+lintcheck:
 	-pylint lenstest/lenstest.py
-	-pydocstyle lenstest/lenstest.py
 	-pylint lenstest/__init__.py
-	-pydocstyle lenstest/__init__.py
 	-pylint lenstest/ronchi.py
-	-pydocstyle lenstest/ronchi.py
 	-pylint lenstest/foucault.py
+
+doccheck:
+	-pydocstyle lenstest/lenstest.py
+	-pydocstyle lenstest/__init__.py
+	-pydocstyle lenstest/ronchi.py
 	-pydocstyle lenstest/foucault.py
 
 rstcheck:
@@ -40,6 +42,7 @@ rcheck:
 	make notecheck
 	make rstcheck
 	make pycheck
+	make doccheck
 	touch docs/*ipynb
 	touch docs/*rst
 	make html
