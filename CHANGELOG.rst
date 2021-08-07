@@ -1,7 +1,7 @@
 Changelog
 =========
 
-v0.4.1
+v0.5.1
 ------
 * create pure python packaging
 * include wheel file

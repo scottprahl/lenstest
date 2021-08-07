@@ -8,21 +8,19 @@
 # edit version in setup.cfg
   git commit -m 'update version' setup.cfg conf.py
 
-# update CHANGELOG.txt  `git shortlog v0.3.0..HEAD`
+# update CHANGELOG.txt  `git shortlog v0.5.0..HEAD`
   git commit -m 'update recent changes' CHANGELOG.txt
   git push
 
 # create release tag on github
-  git tag v1.0.1
-  git push origin v1.0.1
+  git tag v0.5.1
+  git push origin v0.5.1
 
 # upload source to pypi
-  python3 setup.py sdist
+  python3 -m build
   python3 -m twine upload dist/*
-  
-# manually update release at
-  https://github.com/scottprahl/lenstest
-  
-# check releases at pypi and readthedocs
-  https://pypi.org/project/lenstest/
-  https://lenstest.readthedocs.io
+
+# update/check releases
+  open https://github.com/scottprahl/lenstest
+  open https://pypi.org/project/lenstest/
+  open https://lenstest.readthedocs.io
