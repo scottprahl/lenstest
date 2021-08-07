@@ -28,6 +28,7 @@ notecheck:
 
 html:
 	$(SPHINXBUILD) -b html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
+	open docs/_build/index.html
 
 clean:
 	rm -rf dist
@@ -39,12 +40,11 @@ clean:
 	rm -rf __pycache__
 
 rcheck:
+	make clean
 	make notecheck
 	make rstcheck
-	make pycheck
+	make lintcheck
 	make doccheck
-	touch docs/*ipynb
-	touch docs/*rst
 	make html
 	check-manifest
 	pyroma -d .
