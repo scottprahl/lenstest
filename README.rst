@@ -28,6 +28,8 @@ This implementation contains code for
     * Foucault Knife Edge Test
     * Ronchi Ruling Test
 
+Detailed documentation is at <https://github.com/scottprahl/lenstest>
+
 Using lenstest
 -------------------
 
