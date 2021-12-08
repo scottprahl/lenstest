@@ -1,6 +1,9 @@
 lenstest
 =========
 
+.. image:: https://img.shields.io/pypi/v/lenstest.svg
+   :target: https://pypi.org/project/lenstest/
+
 .. image:: https://colab.research.google.com/assets/colab-badge.svg
    :target: https://colab.research.google.com/github/scottprahl/lenstest/blob/master
 
@@ -24,6 +27,8 @@ This implementation contains code for
 
     * Foucault Knife Edge Test
     * Ronchi Ruling Test
+
+Detailed documentation is at <https://lenstest.readthedocs.io>
 
 Using lenstest
 -------------------

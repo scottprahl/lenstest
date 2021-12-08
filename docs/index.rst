@@ -8,21 +8,26 @@
    :caption: Ronchigrams
    :hidden:
 
-   ronchi.ipynb
-   ronchi-dynamic.ipynb
-   ronchi-basic.ipynb
+   ronchi
+   ronchi-dynamic
+   ronchi-basic
 
 .. toctree::
    :caption: Foucault Knife Edge
    :hidden:
 
-   foucault.ipynb
-   foucault-dynamic.ipynb
+   foucault
+   foucault-dynamic
 
 .. toctree::
-   :caption: Other
+   :caption: API
    :hidden:
 
    lenstest
+
+.. toctree::
+   :caption: Versions
+   :hidden:
+
    changelog
 

@@ -14,6 +14,7 @@ __all__ = ('ronchi_mask',
            'ronchigram',
            'ronchi_plot')
 
+
 def ronchi_mask(RoC, lpm, z_offset, conic, X, Y, mask=False, phi=0):
     """
     Create Ronchigram with random points.
@@ -50,18 +51,18 @@ def ronchi_mask(RoC, lpm, z_offset, conic, X, Y, mask=False, phi=0):
         sagitta = lenstest.lenstest.sagitta(RoC, conic, X, Y)
 
     # find the x value where the ray passes through the Ronchi ruling
-    Xr = X * np.cos(phi)+Y*np.sin(phi)
-    Lx = Xr * (-z_offset - sagitta * conic)/(RoC + sagitta * conic)
+    Xr = X * np.cos(phi) + Y * np.sin(phi)
+    Lx = Xr * (-z_offset - sagitta * conic) / (RoC + sagitta * conic)
 
     # create mask for Ronchi Ruling
-    T = (np.abs(2*lpm*Lx)+0.5).astype(int)
+    T = (np.abs(2 * lpm * Lx) + 0.5).astype(int)
 
     T_mask = T % 2 == 0
 
     return T_mask
 
 
-def ronchigram(D, RoC, lpm, z_offset, conic, phi=0,\
+def ronchigram(D, RoC, lpm, z_offset, conic, phi=0,
                N=100000, invert=False, random=True, mask=False):
     """
     Create Ronchigram for points on a grid or randomly selected.
@@ -105,10 +106,11 @@ def ronchigram(D, RoC, lpm, z_offset, conic, phi=0,\
     y_mask = np.ma.masked_where(T_mask, Y)
 
     if mask:
-        x_mask *= abs(z_offset/RoC)
-        y_mask *= abs(z_offset/RoC)
+        x_mask *= abs(z_offset / RoC)
+        y_mask *= abs(z_offset / RoC)
 
     return x_mask, y_mask
+
 
 def ronchi_plot(D, RoC, lp_per_mm, z_offset, conic, phi=0, init=True):
     """Plot the Surface Ronchigram."""
@@ -121,9 +123,9 @@ def ronchi_plot(D, RoC, lp_per_mm, z_offset, conic, phi=0, init=True):
     plt.gca().set_facecolor("black")
     plt.plot(x, y, 'o', markersize=0.1, color='white')
     plt.gca().set_aspect('equal')
-    lenstest.lenstest.draw_circle(D/2, color='green')
-    plt.ylim(-D/2*1.2, D/2*1.2)
-    plt.xlim(-D/2*1.2, D/2*1.2)
+    lenstest.lenstest.draw_circle(D / 2, color='green')
+    plt.ylim(-D / 2 * 1.2, D / 2 * 1.2)
+    plt.xlim(-D / 2 * 1.2, D / 2 * 1.2)
     plt.title("D=%.1fmm, RoC=%.1fmm, K=%.2f" % (D, RoC, conic))
     plt.xlabel("Mirror/Lens Plane (mm)")
     plt.ylabel("Mirror/Lens Plane (mm)")
@@ -132,13 +134,13 @@ def ronchi_plot(D, RoC, lp_per_mm, z_offset, conic, phi=0, init=True):
     plt.subplot(1, 2, 2)
     plt.gca().set_facecolor("black")
     plt.plot(x, y, 'o', markersize=0.6, color='white')
-    r_spot = D/2 / RoC*z_offset
+    r_spot = D / 2 / RoC * z_offset
     lenstest.lenstest.draw_circle(r_spot, color='green')
     plt.gca().set_aspect('equal')
     plt.xlabel("Ronchi Ruling Plane (mm)")
 
-    size=r_spot*1.2
+    size = r_spot * 1.2
     plt.ylim(-size, size)
     plt.xlim(-size, size)
 
-    plt.title('Δz=%.2fmm, %.0f lp/mm'%(z_offset, lp_per_mm) )
+    plt.title('Δz=%.2fmm, %.0f lp/mm' % (z_offset, lp_per_mm))
