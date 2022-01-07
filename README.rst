@@ -1,6 +1,8 @@
 lenstest
 =========
 
+by Scott Prahl
+
 .. image:: https://img.shields.io/pypi/v/lenstest.svg
    :target: https://pypi.org/project/lenstest/
 
