@@ -1,5 +1,7 @@
 # pylint: disable=invalid-name
 # pylint: disable=too-many-arguments
+# pylint: disable=consider-using-f-string
+
 """
 Generate Foucaugrams (Foucault Knife Edge images) for lens testing.
 
