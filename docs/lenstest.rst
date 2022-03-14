@@ -1,11 +1,8 @@
 API for `lenstest` package
 ===========================
 
-.. automodule:: lenstest.lenstest
-   :members:
+.. automodapi:: lenstest.lenstest
 
-.. automodule:: lenstest.ronchi
-   :members:
+.. automodapi:: lenstest.ronchi
 
-.. automodule:: lenstest.foucault
-   :members:
+.. automodapi:: lenstest.foucault

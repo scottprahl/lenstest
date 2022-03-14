@@ -20,7 +20,7 @@ rstcheck:
 	-rstcheck CHANGELOG.rst
 	-rstcheck docs/index.rst
 	-rstcheck docs/changelog.rst
-	-rstcheck --ignore-directives automodule docs/lenstest.rst
+	-rstcheck --ignore-directives automodapi docs/lenstest.rst
 
 notecheck:
 	make clean
@@ -31,13 +31,16 @@ html:
 	open docs/_build/index.html
 
 clean:
+	rm -rf .ipynb_checkpoints
+	rm -rf .pytest_cache
+	rm -rf .tox
+	rm -rf __pycache__
 	rm -rf dist
 	rm -rf lenstest.egg-info
+	rm -rf lenstest/__init__.pyc
 	rm -rf lenstest/__pycache__
 	rm -rf docs/_build
 	rm -rf docs/api
-	rm -rf .tox
-	rm -rf __pycache__
 
 rcheck:
 	make clean

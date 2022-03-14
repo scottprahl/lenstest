@@ -2,8 +2,9 @@ include CHANGELOG.rst
 include LICENSE.txt
 
 exclude .gitignore
-exclude docs/*
+exclude .readthedocs.yaml
 exclude Makefile
 exclude release.txt
 exclude requirements.txt
 exclude test_all_notebooks.py
+exclude docs/*
