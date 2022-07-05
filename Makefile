@@ -41,6 +41,7 @@ clean:
 	rm -rf lenstest/__pycache__
 	rm -rf docs/_build
 	rm -rf docs/api
+	rm -rf docs/.ipynb_checkpoints
 
 rcheck:
 	make clean
