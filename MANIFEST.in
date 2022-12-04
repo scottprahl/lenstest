@@ -6,5 +6,5 @@ exclude .readthedocs.yaml
 exclude Makefile
 exclude release.txt
 exclude requirements.txt
-exclude test_all_notebooks.py
+exclude tests/*
 exclude docs/*

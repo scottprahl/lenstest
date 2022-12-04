@@ -103,9 +103,9 @@ def foucaugram(D, RoC, x_offset, z_offset, conic,
     return x_image, y_image
 
 
-def foucault_plot(D, RoC, x_offset, offset, conic, phi=0, init=True, figsize=(10, 5), A1=0):
+def foucault_plot(D, RoC, x_offset, z_offset, conic, phi=0, init=True, figsize=(10, 5), A1=0):
     """Plot the Foucault knife edge image."""
-    x, y = foucaugram(D, RoC, x_offset, offset, conic, phi=phi, A1=A1)
+    x, y = foucaugram(D, RoC, x_offset, z_offset, conic, phi=phi, A1=A1)
 
     if init:
         plt.subplots(1, 2, figsize=figsize)
@@ -123,7 +123,7 @@ def foucault_plot(D, RoC, x_offset, offset, conic, phi=0, init=True, figsize=(10
 
     plt.subplot(1, 2, 2)
     x, y = lenstest.lenstest.knife_polygon(D / 2, phi, x_offset)
-    r_spot = abs(offset * D / 2 / RoC)
+    r_spot = abs(z_offset * D / 2 / RoC)
     lenstest.lenstest.draw_circle(r_spot, color='green')
     plt.gca().set_aspect('equal')
     plt.fill(x, y, color='black', alpha=0.8)
@@ -134,4 +134,4 @@ def foucault_plot(D, RoC, x_offset, offset, conic, phi=0, init=True, figsize=(10
     plt.xlim(-size, size)
 
     phid = np.degrees(phi)
-    plt.title('Δz=%.2fmm, Δx=%.2fmm, ϕ=%.0f°' % (offset, x_offset, phid))
+    plt.title('Δz=%.2fmm, Δx=%.2fmm, ϕ=%.0f°' % (z_offset, x_offset, phid))

@@ -1,17 +1,8 @@
 [build-system]
+
 requires = [
     "setuptools >= 44",
-    "setuptools_scm >= 2.0.0, <3"
+    "setuptools_scm >= 2.0.0, <3",
 ]
+
 build-backend = "setuptools.build_meta"
-
-[tool.tox]
-legacy_tox_ini = """
-
-[tox]
-envlist = py37
-
-[testenv]
-
-commands =
-"""

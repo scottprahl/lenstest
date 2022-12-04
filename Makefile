@@ -22,10 +22,6 @@ rstcheck:
 	-rstcheck docs/changelog.rst
 	-rstcheck --ignore-directives automodapi docs/lenstest.rst
 
-notecheck:
-	make clean
-	pytest --verbose -n 4 test_all_notebooks.py
-
 html:
 	$(SPHINXBUILD) -b html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
 	open docs/_build/index.html
@@ -42,13 +38,16 @@ clean:
 	rm -rf docs/_build
 	rm -rf docs/api
 	rm -rf docs/.ipynb_checkpoints
+	rm -rf tests/__pycache__
+
+test:
+	pytest
 
 rcheck:
 	make clean
-	make notecheck
 	make rstcheck
 	make lintcheck
-	make doccheck
+	make test
 	make html
 	check-manifest
 	pyroma -d .

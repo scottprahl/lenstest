@@ -20,7 +20,7 @@ def sagitta(RoC, conic, X, Y, A1=0):
     Calculate sagitta for conic surface at points X,Y.
 
     This assumes that the point source of light is located at the center
-    of the mirror madius of curvature, RoC.
+    of the mirror radius of curvature.
 
     The Ronchi grating is located at RoC + z_offset and oriented so lines
     are perpendicular to the x-axis
@@ -35,13 +35,13 @@ def sagitta(RoC, conic, X, Y, A1=0):
 
     Args:
         RoC: radius of curvature of mirror [mm]
-        lines_per_mm: line pairs per mm [1/mm]
-        offset: axial offset of grating from center of mirror's RoC [mm]
         conic: conic constant or Schwartzchild constant [-]
-        X,Y: grid of points to evaluate
+        X: x-value(s) of points [mm]
+        Y: y-value(s) of points [mm]
+        A1: spherical aberration
 
     Returns:
-        array of points blocked by knife edge
+        sagitta at each (x,y) point
     """
     # find the x value where the ray passes through the Ronchi ruling
     Pr_sqr = X**2 + Y**2
@@ -85,8 +85,17 @@ def XY_test_points(D, N=100000, random=True):
     return X, Y
 
 
-def knife_polygon(r, phi, dx=0):
-    """Create a polygon for a knife edge."""
+def knife_polygon(r, phi, dx):
+    """
+    Create a polygon for a rotated knife edge.
+
+    Args:
+        r: radius of mirror [mm]
+        phi: rotation from vertical (positive ==> CCW) [radians]
+        dx: horizontal offset [mm]
+    Returns:
+        x, y: coordinates of polygon
+    """
     r *= 1.5
     rad = phi + np.pi / 2
 
