@@ -14,7 +14,8 @@ import lenstest.lenstest
 
 __all__ = ('foucault_mask',
            'foucaugram',
-           'foucault_plot'
+           'foucault_plot',
+           'foucault_layout'
            )
 
 
@@ -110,28 +111,118 @@ def foucault_plot(D, RoC, x_offset, z_offset, conic, phi=0, init=True, figsize=(
     if init:
         plt.subplots(1, 2, figsize=figsize)
 
-    plt.subplot(1, 2, 1)
+    plt.subplot(1, 2, 2)
     plt.gca().set_facecolor("black")
     plt.plot(x, y, 'o', markersize=0.1, color='white')
     plt.gca().set_aspect('equal')
-    lenstest.lenstest.draw_circle(D / 2, color='green')
+    lenstest.lenstest.draw_circle(D / 2, color='blue')
     plt.ylim(-D / 2 * 1.2, D / 2 * 1.2)
     plt.xlim(-D / 2 * 1.2, D / 2 * 1.2)
     plt.title("D=%.1fmm, RoC=%.1fmm, K=%.2f" % (D, RoC, conic))
-    plt.xlabel("Mirror/Lens Plane (mm)")
-    plt.ylabel("Mirror/Lens Plane (mm)")
+    plt.xlabel("Projection Plane Coordinates (mm)")
+    plt.ylabel("Projection Plane Coordinates (mm)")
+    cs=lenstest.lenstest.conic_string(conic)
+    plt.text(0.5, 0.97,
+             "Mirror/Lens is %s " % cs, 
+             color='white',
+             ha='center', va='top',
+             transform=plt.gca().transAxes
+    )
+    plt.title("Screen is %.0f mm from Focus" % RoC)
 
-    plt.subplot(1, 2, 2)
+    plt.subplot(1, 2, 1)
     x, y = lenstest.lenstest.knife_polygon(D / 2, phi, x_offset)
     r_spot = abs(z_offset * D / 2 / RoC)
-    lenstest.lenstest.draw_circle(r_spot, color='green')
+    lenstest.lenstest.draw_circle(r_spot, color='blue')
     plt.gca().set_aspect('equal')
     plt.fill(x, y, color='black', alpha=0.8)
-    plt.xlabel("Knife Edge Plane (mm)")
+    plt.plot(0, 0, 'bo')
+    plt.xlabel("Knife Plane Coordinates (mm)")
+    plt.ylabel("Knife Plane Coordinates (mm)")
 
-    size = r_spot * 4
+    size = max(r_spot * 4, abs(2*x_offset))
     plt.ylim(-size, size)
     plt.xlim(-size, size)
 
     phid = np.degrees(phi)
-    plt.title('Δz=%.2fmm, Δx=%.2fmm, ϕ=%.0f°' % (z_offset, x_offset, phid))
+#    plt.text(0.5, 0.96,
+#             'Δx=%.2fmm, ϕ=%.0f°' % (x_offset, phid), 
+#             color='white',
+#             ha='center', va='top',
+#             transform=plt.gca().transAxes
+#    )
+
+    ks = 'at'
+    if z_offset < 0:
+        ks = '%.3fmm before' % abs(z_offset)
+    if z_offset > 0:
+        ks = '%.3fmm after' % z_offset
+    plt.title("Knife edge is %s focus" % ks)
+    
+    
+def foucault_layout(D, RoC, x_offset, z_offset):
+    """
+    Plots the Foucault knife edge experiment.
+
+    Args:
+        D: diameter of mirror or lens [mm]
+        RoC: radius of curvature of mirror [mm]
+        x_offset: transverse offset of knife edge from optical axis [mm]
+        z_offset: axial offset of knife edge from true focus [mm]
+
+    Returns:
+        nothing
+    """
+    # slope of marginal ray and ray touching knife
+    m2 = (D/2)/RoC
+    if z_offset == 0:
+        m = 0
+    else:
+        m = x_offset/z_offset
+    
+    # account for knife completely missing or blocking beam
+    m = min(m, m2)
+    m = max(m,-m2)
+
+    plt.figure(figsize=(10, 5))
+    
+    # marginal rays
+    plt.plot([-RoC, RoC], [D/2,-D/2], color='black', linewidth=1)
+    plt.plot([-RoC, RoC], [-D/2,D/2], color='black', linewidth=1)
+    
+    # ray touching the knife edge
+    plt.plot([-RoC, RoC], [-m*RoC, m*RoC], color='black', linewidth=1, linestyle='--')
+    
+    # shade blocked light
+    if z_offset < 0:
+        plt.fill_between([z_offset, RoC], [m*z_offset, m*RoC], [z_offset*m2, D/2], color='darkgray')
+    else:
+        plt.fill_between([z_offset, RoC], [m*z_offset, m*RoC], [-z_offset*m2, -D/2], color='darkgray')
+        
+    # draw the lens
+    lenstest.lenstest.draw_lens(D, RoC)
+    plt.text(-RoC, -D/2, 'lens/mirror', ha='right', rotation=90, color='blue')
+
+# focus plane
+#    plt.text(0, D/2, ' focus', ha='left')
+#    plt.axvline(0, color='black', linewidth = 1)
+    
+    # optical axis
+    plt.axhline(0, color='blue', linewidth = 1)
+    plt.text(-RoC*0.96, 0, 'optical axis ', ha='left', va='center', color='blue', 
+             bbox={"facecolor": "white", "edgecolor":"white"})
+
+    # knife 
+#    plt.axvline(z_offset, color='black', linewidth = 0.5)
+    plt.plot([z_offset, z_offset],[x_offset, -D/2], lw=2, color='black')
+    plt.text(z_offset, -D/2, 'knife', ha='center', rotation=90, color='black', 
+             bbox={"facecolor": "white", "edgecolor":"white"})
+
+    # screen
+    plt.axvline(RoC, color='blue', linewidth = 2)
+    plt.text(RoC, -D/2, 'projection screen', ha='left', rotation=90, color='blue')
+
+    plt.xlabel('Distance from focus (mm)')
+    plt.ylabel('Height above optical axis (mm)')
+    plt.title('Foucault Knife Test Showing Shading of Screen')
+    plt.show()

@@ -12,7 +12,9 @@ __all__ = ('XY_test_points',
            'knife_polygon',
            'circle_polygon',
            'draw_circle',
-           'sagitta')
+           'sagitta',
+           'draw_lens',
+           'conic_string')
 
 
 def sagitta(RoC, conic, X, Y, A1=0):
@@ -66,7 +68,6 @@ def XY_test_points(D, N=100000, random=True):
         D: diameter of mirror [mm]
         N: number of points to generate
         random: if False generate points on a grid
-        phi: rotation of knife edge from vertical (positive ==> CCW)
 
     Returns:
         X,Y: arrays of test points
@@ -85,9 +86,12 @@ def XY_test_points(D, N=100000, random=True):
     return X, Y
 
 
-def knife_polygon(r, phi, dx):
+def knife_polygon2(r, phi, dx):
     """
     Create a polygon for a rotated knife edge.
+    
+    The polygon is a square that has been rotated by an
+    angle phi from the verticle and then 
 
     Args:
         r: radius of mirror [mm]
@@ -99,11 +103,12 @@ def knife_polygon(r, phi, dx):
     r *= 1.5
     rad = phi + np.pi / 2
 
-    x = np.full(6, dx * np.cos(phi))
-    y = np.full(6, dx * np.sin(phi))
-
-    x[1] = x[0] + r * np.cos(rad)
-    y[1] = y[0] + r * np.sin(rad)
+    x = np.full(5, (dx + r) * np.cos(phi))
+    y = np.full(5, (dx + r) * np.sin(phi))
+    
+    rad = rad + np.pi / 2
+    x[1] = x[0] + 2 * r * np.cos(rad)
+    y[1] = y[0] + 2 * r * np.sin(rad)
 
     rad = rad + np.pi / 2
     x[2] = x[1] + r * np.cos(rad)
@@ -113,10 +118,41 @@ def knife_polygon(r, phi, dx):
     x[3] = x[2] + 2 * r * np.cos(rad)
     y[3] = y[2] + 2 * r * np.sin(rad)
 
-    rad = rad + np.pi / 2
-    x[4] = x[3] + r * np.cos(rad)
-    y[4] = y[3] + r * np.sin(rad)
+#    rad = rad + np.pi / 2
+#    x[4] = x[3] + r * np.cos(rad)
+#    y[4] = y[3] + r * np.sin(rad)
+    
+    # x[5] = x[0] and y[5] = y[0]
     return x, y
+
+
+def knife_polygon(s, phi, ds):
+    """
+    Create a polygon for a rotated knife edge.
+    
+    The polygon is a vertical 1:2 rectangle that is shifted and
+    then rotated counter clockwise.  
+    
+    When the shift is zero, then the edge of the knife edge is at the origin.
+    Specifing a shift translates the knife edge across the origin.
+
+    Args:
+        s: short side of the rectangle [mm]
+        phi: CCW rotation              [radians]
+        ds: shift of knife edge        [mm]
+    Returns:
+        x, y: coordinates of polygon
+    """
+    # vertical s x 2s rectangle with center of edge shifted by dx
+    xp = np.array([0,s,s,0,0]) + ds
+    yp = np.array([s,s,-s,-s,s])
+    
+    # rotate rectangle CCW
+    alpha = phi + np.pi
+    x = xp * np.cos(alpha) - yp * np.sin(alpha)
+    y = xp * np.sin(alpha) + yp * np.cos(alpha)
+    
+    return x,y
 
 
 def circle_polygon(R, X0=0, Y0=0):
@@ -124,3 +160,32 @@ def circle_polygon(R, X0=0, Y0=0):
     theta = np.linspace(0, 2 * np.pi, 100)
 #    plt.gca().set_aspect('equal')
     return X0 + R * np.sin(theta), Y0 + R * np.cos(theta)
+
+
+def draw_lens(D, RoC):
+    """Draw one face of a lens or mirror."""
+    theta_max = np.arctan2(D/2, RoC)
+    theta = np.linspace(-theta_max,theta_max, 51)
+    x = -RoC * np.cos(theta)
+    y = -RoC * np.sin(theta)
+    plt.plot(x,y,'b')
+
+
+def conic_string(conic):
+    """String that describes a conic value."""
+    if np.isinf(conic):
+        return 'flat'
+    
+    if conic > 0:
+        return "oblate spheroid"
+        
+    if conic == 0:
+        return "sphere"
+        
+    if conic > -1:
+        return "prolate spheroid"
+        
+    if conic == -1:
+        return "paraboloid"
+    
+    return "hyperboloid"
