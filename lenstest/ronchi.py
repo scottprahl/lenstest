@@ -1,6 +1,7 @@
 # pylint: disable=invalid-name
 # pylint: disable=too-many-arguments
 # pylint: disable=consider-using-f-string
+# pylint: disable=too-many-locals
 """
 Generate ronchigrams for lens testing.
 
@@ -11,68 +12,65 @@ import numpy as np
 import matplotlib.pyplot as plt
 import lenstest
 
-__all__ = ('ronchi_mask',
-           'ronchigram',
-           'ronchi_plot')
+__all__ = ('gram',
+           'plot_ruling_and_screen',
+           'plot_lens_layout',
+           'plot_mirror_layout')
 
 
-def ronchi_mask(RoC, lpm, z_offset, conic, X, Y, mask=False, phi=0):
+def _transmitted(RoC, lpm, z_offset, X, Y, conic=0, mask=False, phi=0):
     """
-    Create Ronchigram with random points.
+    Determine if X,Y points are transmitted through Ronchi ruling.
 
     This assumes that the point source of light is located at the center
-    of the mirror madius of curvature, RoC.
+    of the mirror madius of curvature.
 
-    The Ronchi grating is located at RoC + z_offset and oriented so lines
-    are perpendicular to the x-axis
+    For a mirror the Ronchi grating is located at RoC + z_offset and oriented so
+    lines are perpendicular to the x-axis when phi=0.
 
-    The conic section is specified by conic:
-          conic = ∞ for surface that is flat
-          conic > 0 for surface that is an oblate spheroid
-          conic = 0 for surface that is a sphere
-          0<conic<-1 for surface that is a prolate spheroid
-          conic = -1 for surface that is a paraboloid
-          conic < -1 for surface that is a hyperboloid
+    If `mask==True` then the mirror parameters are ignored.  This is useful
+    for creating a plot for light at the Ronchi ruling.
 
     Args:
-        D: diameter of mirror [mm]
         RoC: radius of curvature of mirror [mm]
         lpm: line pairs per mm [1/mm]
         z_offset: axial z_offset of grating from center of mirror's RoC [mm]
+        X, Y: grid of points to evaluate [mm]
         conic: conic constant or Schwartzchild constant [-]
-        X, Y: grid of points to evaluate
-        invert: boolean to draw dark or light areas
-
+        mask: show Ronchi ruling without lens/mirror effects
+        phi: CCW rotation of Ronchi ruling from horizontal [radians]
     Returns:
-        x, y: masked listed of points to plot
+        1D boolean array describing points blocked by Ronchi ruling
     """
     if mask:
         sagitta = 0
     else:
         sagitta = lenstest.lenstest.sagitta(RoC, conic, X, Y)
 
-    # find the x value where the ray passes through the Ronchi ruling
+    # rotate points
     Xr = X * np.cos(phi) + Y * np.sin(phi)
+
+    # x values of rays intersecting Ronchi ruling plane
     Lx = Xr * (-z_offset - sagitta * conic) / (RoC + sagitta * conic)
 
-    # create mask for Ronchi Ruling
+    # scale so even values pass through ruling
     T = (np.abs(2 * lpm * Lx) + 0.5).astype(int)
 
+    # True/False array that designates if points pass through ruling
     T_mask = T % 2 == 0
 
     return T_mask
 
 
-def ronchigram(D, RoC, lpm, z_offset, conic, phi=0,
-               N=100000, invert=False, random=True, mask=False):
+def gram(D, RoC, lpm, z_offset, conic=0, phi=0,
+               N=100000, invert=False, on_grid=False, mask=False):
     """
-    Create Ronchigram for points on a grid or randomly selected.
+    Create points that pass through a Ronchi ruling.
+
+    When plotted these points will be a Ronchigram.
 
     This assumes that the point source of light is located at the center
     of the mirror madius of curvature, RoC.
-
-    The Ronchi grating is displaced from the center of the mirror by z_offset.
-    The Ronchi rulings are oriented so lines are perpendicular to the x-axis
 
     The conic section is specified by conic:
           conic = ∞ for surface that is flat
@@ -88,16 +86,18 @@ def ronchigram(D, RoC, lpm, z_offset, conic, phi=0,
         lpm: line pairs per mm [1/mm]
         z_offset: axial z_offset of grating from true focus [mm]
         conic: conic constant or Schwartzchild constant [-]
+        phi: CCW rotation of Ronchi ruling from horizontal
         N: number of points to generate
         invert: boolean to draw dark or light areas
-        random: if False generate points on a grid
+        on_grid: if False generate points on a grid
+        mask: show Ronchi ruling without lens/mirror effects
 
     Returns:
         x, y: masked listed of points to plot
     """
-    X, Y = lenstest.lenstest.XY_test_points(D, N=N, random=random)
+    X, Y = lenstest.lenstest.XY_test_points(D, N=N, on_grid=on_grid)
 
-    T_mask = ronchi_mask(RoC, lpm, z_offset, conic, X, Y, mask=mask, phi=phi)
+    T_mask = _transmitted(RoC, lpm, z_offset, X, Y, conic=conic, mask=mask, phi=phi)
 
     if invert:
         T_mask = np.logical_not(T_mask)
@@ -113,35 +113,191 @@ def ronchigram(D, RoC, lpm, z_offset, conic, phi=0,
     return x_mask, y_mask
 
 
-def ronchi_plot(D, RoC, lp_per_mm, z_offset, conic, phi=0, init=True):
-    """Plot the Surface Ronchigram."""
-    x, y = ronchigram(D, RoC, lp_per_mm, z_offset, conic, phi=phi)
+def plot_ruling_and_screen(D, RoC, lp_per_mm, z_offset,
+                           conic=0, phi=0, init=True, on_grid=False):
+    """
+    Plot cross-sections at Ronchi ruling and projection screen.
 
+    The idea is to graph both the beam on the ruling and the expected
+    projection on a screen located at the radius-of-curvature away from
+    the focus.  This allows rapid visualization or roughly how much
+    of the Ronchi ruling interacts with the screen.
+
+    The beam size is limited by the diffraction focus limit of the beam
+    (assuming a 1000nm wavelength).
+
+    Args:
+        D: diameter of mirror [mm]
+        RoC: radius of curvature of mirror [mm]
+        lp_per_mm: line pairs per mm [1/mm]
+        z_offset: axial z_offset of grating from true focus [mm]
+        conic: conic or Schwartzchild constant [-]
+        phi: CCW rotation of Ronchi ruling from horizontal [radians]
+        init: set to False to allow updating plots
+        on_grid: if False generate points on a grid
+
+    Returns:
+        fig: matplotlib Figure object representing the plot
+        ax: matplotlib Axes object representing the plot
+    """
     if init:
-        plt.subplots(1, 2, figsize=(10, 5))
+        fig, ax = plt.subplots(1, 2, figsize=(10, 5))
+    else:
+        fig, ax = None, None
 
+    # create plot in plane of Ronchi Ruling with beam size
     plt.subplot(1, 2, 1)
     plt.gca().set_facecolor("black")
-    plt.plot(x, y, 'o', markersize=0.1, color='white')
     plt.gca().set_aspect('equal')
-    lenstest.lenstest.draw_circle(D / 2, color='green')
-    plt.ylim(-D / 2 * 1.2, D / 2 * 1.2)
-    plt.xlim(-D / 2 * 1.2, D / 2 * 1.2)
-    plt.title("D=%.1fmm, RoC=%.1fmm, K=%.2f" % (D, RoC, conic))
-    plt.xlabel("Mirror/Lens Plane (mm)")
-    plt.ylabel("Mirror/Lens Plane (mm)")
 
-    x, y = ronchigram(D, RoC, lp_per_mm, z_offset, conic, phi=phi, mask=True)
-    plt.subplot(1, 2, 2)
-    plt.gca().set_facecolor("black")
+    # generate and plot all the points
+    x, y = gram(D, RoC, lp_per_mm, z_offset, conic=conic,
+                phi=phi, on_grid=on_grid, mask=True)
     plt.plot(x, y, 'o', markersize=0.6, color='white')
-    r_spot = D / 2 / RoC * z_offset
-    lenstest.lenstest.draw_circle(r_spot, color='green')
-    plt.gca().set_aspect('equal')
-    plt.xlabel("Ronchi Ruling Plane (mm)")
 
+    # Draw circle showing spotsize at location of ruling
+    r_geometric = D / 2 / RoC * z_offset        # mm
+    r_diffraction = 0.5 * 1e-6 * (RoC / 2) / D  # mm
+    r_spot = max(r_geometric, r_diffraction)
+    lenstest.lenstest.draw_circle(r_spot, color='green')
+
+    # limit plot to slightly larger than the beam size
     size = r_spot * 1.2
     plt.ylim(-size, size)
     plt.xlim(-size, size)
+    plt.title('Cross Section at Ronchi Ruling (%.2fmm from Focus)' % z_offset)
+    plt.xlabel("(mm)")
+    plt.ylabel("(mm)")
 
-    plt.title('Δz=%.2fmm, %.0f lp/mm' % (z_offset, lp_per_mm))
+    # create plot in plane of the projection screen
+    plt.subplot(1, 2, 2)
+    plt.gca().set_facecolor("black")
+    plt.gca().set_aspect('equal')
+
+    # generate and plot all the points
+    x, y = gram(D, RoC, lp_per_mm, z_offset, conic=conic, phi=phi)
+    plt.plot(x, y, 'o', markersize=0.1, color='white')
+
+    # Draw circle showing spotsize on projection screen
+    lenstest.lenstest.draw_circle(D / 2, color='green')
+
+    # limit plot to slightly larger than the beam size
+    size = D / 2 * 1.2
+    plt.ylim(-size, size)
+    plt.xlim(-size, size)
+    plt.title('Cross Section at Screen (%.2fmm from Focus)' % RoC)
+    plt.xlabel("(mm)")
+    plt.ylabel("(mm)")
+
+    return fig, ax
+
+
+def plot_lens_layout(D, f, z_offset):
+    """
+    Plots the Ronchi Lens Test Layout (4f system).
+
+    Args:
+        D: diameter of mirror or lens [mm]
+        f: focal length of lens [mm]
+        z_offset: axial offset of knife edge from true focus [mm]
+    Returns:
+        fig: matplotlib Figure object representing the plot
+        ax: matplotlib Axes object representing the plot
+    """
+    fig, ax = plt.subplots(figsize=(10, 5))
+
+    RoC = f          # for lens assuming n=1.5 and biconvex lens
+
+    # point source
+    plt.text(-4*f, D*0.05, 'point source', ha='left', rotation=90, color='blue')
+
+    # marginal rays with lens at -2f
+    DD = 0.8 * D
+    plt.plot([-4*f,-2*f, 2*f], [0,DD/2,-DD/2], color='black', linewidth=1)
+    plt.plot([-4*f,-2*f, 2*f], [0,-DD/2,DD/2], color='black', linewidth=1)
+    plt.plot([-4*f,-2*f, 2*f], [0,DD/4,-DD/4], color='black', linewidth=1)
+    plt.plot([-4*f,-2*f, 2*f], [0,-DD/4,DD/4], color='black', linewidth=1)
+
+    # draw the lens
+    lenstest.lenstest.draw_lens(D, RoC, -2*f)
+    plt.text(-2*f, D/2, 'lens under test', ha='left', color='blue')
+
+# focus plane
+#    plt.text(0, D/2, ' focus', ha='left')
+#    plt.axvline(0, color='black', linewidth = 1)
+
+    # optical axis
+    plt.axhline(0, color='blue', linewidth = 1)
+#    plt.text(-RoC*0.9, 0, 'optical axis ', ha='left', va='center', color='blue',
+#             bbox={"facecolor": "white", "edgecolor":"white"})
+
+    # Ronchi
+#    plt.axvline(z_offset, color='black', linewidth = 0.5)
+    plt.plot([z_offset, z_offset],[D/2, -D/2], ls='--', lw=2, color='black')
+    plt.text(z_offset, D/2, ' Ronchi Ruling', ha='left', color='black')
+
+    # screen
+    plt.axvline(2*f, color='blue', linewidth = 2)
+    plt.text(2*f*1.02, -D/2, 'projection screen', ha='left', rotation=90, color='blue')
+
+    plt.xlabel('Distance from focus (mm)')
+    plt.ylabel('Height above optical axis (mm)')
+    plt.title('Ronchi Ruling Lens Test')
+    return fig, ax
+
+
+def plot_mirror_layout(D, RoC, z_offset):
+    """
+    Plots the Ronchi Mirror Test Layout.
+
+    Args:
+        D: diameter of mirror or lens [mm]
+        RoC: radius of curvature of mirror [mm]
+        z_offset: axial offset of knife edge from true focus [mm]
+    Returns:
+        fig: matplotlib Figure object representing the plot
+        ax: matplotlib Axes object representing the plot
+    """
+    fig, ax = plt.subplots(figsize=(10, 5))
+
+    # initial height offset
+    yo = D/8
+
+    # point source
+    plt.text(0, yo, ' point source', ha='left', va='center', color='blue')
+
+    # marginal rays with mirror at -RoC
+    DD = 0.8 * D
+    y_screen = -yo-(DD/2+yo)/RoC*D
+    plt.plot([0,-RoC, 0, D], [yo,DD/2,-yo,y_screen], color='blue', linewidth=1)
+#    plt.plot([0,-RoC, 0], [yo,DD/4,-yo], color='black', linewidth=1)
+#    plt.plot([0,-RoC, 0], [yo,-DD/4,-yo], color='black', linewidth=1)
+    y_screen = -yo-(DD/2-yo)/RoC*D
+    plt.plot([0,-RoC, 0, D], [yo,-DD/2,-yo,-y_screen-2*yo], color='black', linewidth=1)
+
+    # draw the mirror
+    lenstest.lenstest.draw_mirror(D, RoC, -RoC)
+    plt.text(-RoC, D/2, 'mirror under test', ha='left', color='blue')
+
+# focus plane
+#    plt.text(0, D/2, ' focus', ha='left')
+#    plt.axvline(0, color='black', linewidth = 1)
+
+    # optical axis
+    plt.axhline(0, color='blue', linewidth = 1)
+#    plt.text(-RoC*0.9, 0, 'optical axis ', ha='left', va='center', color='blue',
+#             bbox={"facecolor": "white", "edgecolor":"white"})
+
+    # Ronchi
+#    plt.axvline(z_offset, color='black', linewidth = 0.5)
+    plt.plot([z_offset, z_offset],[0, -D/2], ls='--', lw=2, color='black')
+    plt.text(z_offset, -D/2, ' Ronchi Ruling', ha='right', color='black')
+
+    # screen
+    plt.axvline(D, color='blue', linewidth = 2)
+    plt.text(D*1.02, -D/2, 'projection screen', ha='left', rotation=90, color='blue')
+
+    plt.xlabel('Distance from focus (mm)')
+    plt.ylabel('Height above optical axis (mm)')
+    plt.title('Ronchi Ruling Lens Test')
+    return fig, ax
