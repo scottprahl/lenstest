@@ -194,7 +194,7 @@ def plot_ruling_and_screen(D, RoC, lp_per_mm, z_offset,
 
 def plot_lens_layout(D, f, z_offset):
     """
-    Plots the Ronchi Lens Test Layout (4f system).
+    Plot the Ronchi Lens Test Layout (4f system).
 
     Args:
         D: diameter of mirror or lens [mm]
@@ -248,7 +248,7 @@ def plot_lens_layout(D, f, z_offset):
 
 def plot_mirror_layout(D, RoC, z_offset):
     """
-    Plots the Ronchi Mirror Test Layout.
+    Plot the Ronchi Mirror Test Layout.
 
     Args:
         D: diameter of mirror or lens [mm]

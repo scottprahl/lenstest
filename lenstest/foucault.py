@@ -167,7 +167,7 @@ def plot_ruling_and_screen(D, RoC, x_offset, z_offset,
 
 def plot_lens_layout(D, RoC, x_offset, z_offset):
     """
-    Plots the Foucault knife edge experiment.
+    Plot the Foucault knife edge experiment.
 
     Args:
         D: diameter of mirror or lens [mm]
@@ -238,7 +238,7 @@ def plot_lens_layout(D, RoC, x_offset, z_offset):
 
 def plot_mirror_layout(D, RoC, x_offset, z_offset):
     """
-    Plots the Foucault knife edge experiment.
+    Plot the Foucault knife edge experiment.
 
     Args:
         D: diameter of mirror or lens [mm]

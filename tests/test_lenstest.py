@@ -1,15 +1,15 @@
 # pylint: disable=invalid-name
 # pylint: disable=unused-variable
 # pylint: disable=no-self-use
-"""
-Test functionality of utility routines found in lenstest.py.
-"""
+"""Test functionality of utility routines found in lenstest.py."""
+
 import unittest
 import numpy as np
 from lenstest import lenstest
 
 class TestLensTest(unittest.TestCase):
     """Evaluate all the functions."""
+
     def test_sagitta(self):
         """Ensure basic execution with different parameters."""
         inputs = [

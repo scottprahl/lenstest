@@ -209,7 +209,6 @@ def draw_lens(D, RoC, middle=0):
     Returns:
         Nothing.  Use `plt.show()` to see result
     """
-
     theta_max = np.arctan2(D / 2, RoC)
     theta = np.linspace(-theta_max, theta_max, 11)
     x = -RoC * np.cos(theta)
@@ -241,7 +240,7 @@ def draw_mirror(D, RoC, vertex=0):
 
 
 def conic_string(conic):
-    """String that describes a conic value."""
+    """Create string that describes a conic value."""
     if np.isinf(conic):
         return 'flat'
 

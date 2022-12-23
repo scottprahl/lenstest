@@ -1,9 +1,8 @@
 # pylint: disable=invalid-name
 # pylint: disable=no-self-use
 # pylint: disable=protected-access
-"""
-Test functionality of utility routines found in foucault.py.
-"""
+"""Test functionality of utility routines found in foucault.py."""
+
 import unittest
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,6 +10,7 @@ from lenstest import foucault
 
 class TestGram(unittest.TestCase):
     """Test gram functionality."""
+
     def test_gram_output_type(self):
         """Test that gram returns two numpy arrays."""
         D = 100
@@ -44,6 +44,7 @@ class TestGram(unittest.TestCase):
 
 class TestTransmitted(unittest.TestCase):
     """Test _transmitted functionality."""
+
     def test_transmitted_output_type(self):
         """Test that _transmitted returns a numpy array."""
         RoC = 200
@@ -77,6 +78,7 @@ class TestTransmitted(unittest.TestCase):
 
 class TestPlotRulingAndScreen(unittest.TestCase):
     """Test plot_ruling_and_screen functionality."""
+
     def test_plot_ruling_and_screen_output_type(self):
         """Test that plot_ruling_and_screen returns a tuple."""
         D = 100
@@ -108,6 +110,7 @@ class TestPlotRulingAndScreen(unittest.TestCase):
 
 class TestPlotLensLayout(unittest.TestCase):
     """Test plot_lens_layout functionality."""
+
     def test_plot_lens_layout_output_type(self):
         """Test that plot_lens_layout returns a tuple."""
         D = 100
@@ -130,6 +133,7 @@ class TestPlotLensLayout(unittest.TestCase):
 
 class TestPlotMirrorLayout(unittest.TestCase):
     """Test plot_mirror_layout functionality."""
+
     def test_plot_mirror_layout_output_type(self):
         """Test that plot_mirror_layout returns a tuple."""
         D = 100
