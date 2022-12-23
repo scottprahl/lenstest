@@ -10,11 +10,11 @@ Documentation and examples are available at <https://lenstest.readthedocs.io>
 import numpy as np
 import matplotlib.pyplot as plt
 
-__all__ = ('XY_test_points',
+__all__ = ('sagitta',
+           'XY_test_points',
            'knife_polygon',
            'circle_polygon',
            'draw_circle',
-           'sagitta',
            'draw_lens',
            'draw_mirror',
            'conic_string',
@@ -59,9 +59,21 @@ def sagitta(RoC, conic, X, Y, A=0, D=0):
 
 
 def draw_circle(R, X0=0, Y0=0, color='black'):
-    """Draw a circle."""
+    """
+    Draw a circle.
+
+    If the circle that is plotted should be round, then
+    `plt.gca().set_aspect('equal')` so aspect ratio on both axes is equal.
+
+    Args:
+        R: radius of circle
+        X0: x-value of center of circle
+        Y0: y-value of center of circle
+        color: color of the circle
+    Returns:
+        X, Y: arrays of test points
+    """
     theta = np.linspace(0, 2 * np.pi, 100)
-#    plt.gca().set_aspect('equal')
     plt.plot(X0 + R * np.sin(theta), Y0 + R * np.cos(theta), color=color)
 
 
@@ -74,10 +86,9 @@ def XY_test_points(D, N=100000, on_grid=False):
     Args:
         D: diameter of mirror [mm]
         N: number of points to generate
-        random: if False generate points on a grid
-
+        on_grid: if False generate points on a grid
     Returns:
-        X,Y: arrays of test points
+        X, Y: arrays of test points
     """
     if on_grid:
         gridpts = np.linspace(-D / 2, D / 2, int(np.sqrt(N)))
