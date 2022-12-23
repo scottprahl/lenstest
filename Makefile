@@ -4,10 +4,13 @@ SOURCEDIR     = docs
 BUILDDIR      = docs/_build
 
 lintcheck:
-	-pylint lenstest/lenstest.py
 	-pylint lenstest/__init__.py
+	-pylint lenstest/lenstest.py
 	-pylint lenstest/ronchi.py
 	-pylint lenstest/foucault.py
+	-pylint tests/test_lenstest.py
+	-pylint tests/test_ronchi.py
+	-pylint tests/test_foucault.py
 
 doccheck:
 	-pydocstyle lenstest/lenstest.py
