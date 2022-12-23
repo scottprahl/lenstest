@@ -1,4 +1,6 @@
 # pylint: disable=invalid-name
+# pylint: disable=too-many-arguments
+
 """
 Utility routines for lens testing.
 
@@ -14,10 +16,12 @@ __all__ = ('XY_test_points',
            'draw_circle',
            'sagitta',
            'draw_lens',
-           'conic_string')
+           'draw_mirror',
+           'conic_string',
+           )
 
 
-def sagitta(RoC, conic, X, Y, A1=0):
+def sagitta(RoC, conic, X, Y, A=0, D=0):
     """
     Calculate sagitta for conic surface at points X,Y.
 
@@ -27,29 +31,30 @@ def sagitta(RoC, conic, X, Y, A1=0):
     The Ronchi grating is located at RoC + z_offset and oriented so lines
     are perpendicular to the x-axis
 
-    The conic section is specified by conic:
-          conic = ∞ for surface that is flat,
-          conic > 0 for surface that is an oblate spheroid,
-          conic = 0 for surface that is a sphere,
-          0<conic<-1 for surface that is a prolate spheroid,
-          conic = -1 for surface that is a paraboloid
-          conic < -1 for surface that is a hyperboloid
+    The conic section is specified by conic::
+        conic = ∞ for surface that is flat,
+        conic > 0 for surface that is an oblate spheroid,
+        conic = 0 for surface that is a sphere,
+        0<conic<-1 for surface that is a prolate spheroid,
+        conic = -1 for surface that is a paraboloid
+        conic < -1 for surface that is a hyperboloid
 
     Args:
         RoC: radius of curvature of mirror [mm]
         conic: conic constant or Schwartzchild constant [-]
         X: x-value(s) of points [mm]
         Y: y-value(s) of points [mm]
-        A1: spherical aberration
+        A: spherical aberration [1/mm³]
+        D: defocus [1/mm]
 
     Returns:
-        sagitta at each (x,y) point
+        sagitta at each (x,y) point [mm]
     """
     # find the x value where the ray passes through the Ronchi ruling
-    Pr_sqr = X**2 + Y**2
-    heights = Pr_sqr / (RoC + np.sqrt(RoC * RoC - (1 + conic) * Pr_sqr))
-    heights += A1 * Pr_sqr**2
-#    print(A1, X[1]**2+Y[1]**2,heights[1])
+    rho_sqr = X**2 + Y**2
+    heights = rho_sqr / (RoC + np.sqrt(RoC * RoC - (1 + conic) * rho_sqr))
+    heights += A * rho_sqr**2
+    heights += D * rho_sqr
     return heights
 
 
@@ -60,9 +65,11 @@ def draw_circle(R, X0=0, Y0=0, color='black'):
     plt.plot(X0 + R * np.sin(theta), Y0 + R * np.cos(theta), color=color)
 
 
-def XY_test_points(D, N=100000, random=True):
+def XY_test_points(D, N=100000, on_grid=False):
     """
     Generate test points for lens test.
+
+    The generated points all fall within a circle of radius D.
 
     Args:
         D: diameter of mirror [mm]
@@ -72,26 +79,27 @@ def XY_test_points(D, N=100000, random=True):
     Returns:
         X,Y: arrays of test points
     """
-    if random:
-        U1 = np.random.uniform(size=N)
-        U2 = np.random.uniform(size=N)
-        X = D / 2 * np.sqrt(U2) * np.cos(2 * np.pi * U1)
-        Y = D / 2 * np.sqrt(U2) * np.sin(2 * np.pi * U1)
-    else:
+    if on_grid:
         gridpts = np.linspace(-D / 2, D / 2, int(np.sqrt(N)))
         x_grid, y_grid = np.meshgrid(gridpts, gridpts)
         r_mask = x_grid**2 + y_grid**2 > D * D / 4
         X = np.ma.masked_where(r_mask, x_grid)
         Y = np.ma.masked_where(r_mask, y_grid)
+    else:
+        U1 = np.random.uniform(size=N)
+        U2 = np.random.uniform(size=N)
+        X = D / 2 * np.sqrt(U2) * np.cos(2 * np.pi * U1)
+        Y = D / 2 * np.sqrt(U2) * np.sin(2 * np.pi * U1)
+
     return X, Y
 
 
 def knife_polygon2(r, phi, dx):
     """
     Create a polygon for a rotated knife edge.
-    
+
     The polygon is a square that has been rotated by an
-    angle phi from the verticle and then 
+    angle phi from the verticle and then
 
     Args:
         r: radius of mirror [mm]
@@ -105,7 +113,7 @@ def knife_polygon2(r, phi, dx):
 
     x = np.full(5, (dx + r) * np.cos(phi))
     y = np.full(5, (dx + r) * np.sin(phi))
-    
+
     rad = rad + np.pi / 2
     x[1] = x[0] + 2 * r * np.cos(rad)
     y[1] = y[0] + 2 * r * np.sin(rad)
@@ -121,7 +129,7 @@ def knife_polygon2(r, phi, dx):
 #    rad = rad + np.pi / 2
 #    x[4] = x[3] + r * np.cos(rad)
 #    y[4] = y[3] + r * np.sin(rad)
-    
+
     # x[5] = x[0] and y[5] = y[0]
     return x, y
 
@@ -129,10 +137,10 @@ def knife_polygon2(r, phi, dx):
 def knife_polygon(s, phi, ds):
     """
     Create a polygon for a rotated knife edge.
-    
+
     The polygon is a vertical 1:2 rectangle that is shifted and
-    then rotated counter clockwise.  
-    
+    then rotated counter clockwise.
+
     When the shift is zero, then the edge of the knife edge is at the origin.
     Specifing a shift translates the knife edge across the origin.
 
@@ -146,46 +154,96 @@ def knife_polygon(s, phi, ds):
     # vertical s x 2s rectangle with center of edge shifted by dx
     xp = np.array([0,s,s,0,0]) + ds
     yp = np.array([s,s,-s,-s,s])
-    
+
     # rotate rectangle CCW
     alpha = phi + np.pi
     x = xp * np.cos(alpha) - yp * np.sin(alpha)
     y = xp * np.sin(alpha) + yp * np.cos(alpha)
-    
+
     return x,y
 
 
 def circle_polygon(R, X0=0, Y0=0):
-    """Create a polygon for a circle."""
+    """
+    Create a polygon for a circle.
+
+    If you want to plot the circle then the aspect ratio for the axes should
+    to be set to equal: `plt.gca().set_aspect('equal')` so that the circle is
+    looks round.
+
+    Args:
+        R: radius of the circle
+        X0: x-value of center of circle
+        Y0: y-value of center of circle
+    Returns:
+        x, y: coordinates of polygon
+    """
     theta = np.linspace(0, 2 * np.pi, 100)
-#    plt.gca().set_aspect('equal')
     return X0 + R * np.sin(theta), Y0 + R * np.cos(theta)
 
 
-def draw_lens(D, RoC):
-    """Draw one face of a lens or mirror."""
+def draw_lens(D, RoC, middle=0):
+    """
+    Draw and fill a biconvex lens shape.
+
+    If the glass has an index of 1.5, then the radius-of-curvature
+    will equal the focal length.
+
+    The lens is drawn with its center at `center`
+
+    Args:
+        D: diameter of the lens
+        RoC: x-value of center of circle
+        middle: y-value of center of circle
+    Returns:
+        Nothing.  Use `plt.show()` to see result
+    """
+
+    theta_max = np.arctan2(D / 2, RoC)
+    theta = np.linspace(-theta_max, theta_max, 11)
+    x = -RoC * np.cos(theta)
+    y = -RoC * np.sin(theta)
+    dx = RoC + x
+    dx -= dx[0]     # offset surface to center the lens on the vertex
+
+    xx = np.concatenate((middle-dx, middle+dx))
+    yy = np.concatenate((y, -y))
+
+    plt.fill(xx, yy, color='gray', alpha=0.8)
+
+
+def draw_mirror(D, RoC, vertex=0):
+    """Draw one face of a mirror."""
     theta_max = np.arctan2(D/2, RoC)
     theta = np.linspace(-theta_max,theta_max, 51)
     x = -RoC * np.cos(theta)
     y = -RoC * np.sin(theta)
-    plt.plot(x,y,'b')
+    dx = RoC + x
+    dx -= dx[0]     # offset surface to center the lens on the vertex
+
+    xx_last = np.array([vertex-dx[0]-D/10,vertex-dx[0]-D/10,vertex-dx[-1]])
+    yy_last = np.array([y[-1],y[0],y[0]])
+    xx = np.concatenate((vertex+dx,xx_last))
+    yy = np.concatenate((y,yy_last))
+
+    plt.fill(xx, yy, color='gray', alpha=0.8)
 
 
 def conic_string(conic):
     """String that describes a conic value."""
     if np.isinf(conic):
         return 'flat'
-    
+
     if conic > 0:
         return "oblate spheroid"
-        
+
     if conic == 0:
         return "sphere"
-        
+
     if conic > -1:
         return "prolate spheroid"
-        
+
     if conic == -1:
         return "paraboloid"
-    
+
     return "hyperboloid"
