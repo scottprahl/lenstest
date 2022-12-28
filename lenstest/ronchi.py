@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import lenstest
 
 __all__ = ('gram',
+           'plot_gram',
            'plot_ruling_and_screen',
            'plot_lens_layout',
            'plot_mirror_layout')
@@ -22,11 +23,16 @@ def _transmitted(RoC, lpm, z_offset, X, Y, conic=0, mask=False, phi=0):
     """
     Determine if X,Y points are transmitted through Ronchi ruling.
 
-    This assumes that the point source of light is located at the center
-    of the mirror madius of curvature.
+    This assumes that the one of the opaque lines in the ruling is centered on
+    the optical axis.
 
-    For a mirror the Ronchi grating is located at RoC + z_offset and oriented so
-    lines are perpendicular to the x-axis when phi=0.
+    This also assumes that the point source of light is located at the center
+    of the mirror's madius of curvature.
+    
+    The lines of the ruling are perpendicular to the x-axis when phi=0.
+
+    Finally, the ruling is located at RoC + z_offset.  Negative values indicate
+    that the ruling is before the focus of the mirror.
 
     If `mask==True` then the mirror parameters are ignored.  This is useful
     for creating a plot for light at the Ronchi ruling.
@@ -54,7 +60,7 @@ def _transmitted(RoC, lpm, z_offset, X, Y, conic=0, mask=False, phi=0):
     Lx = Xr * (-z_offset - sagitta * conic) / (RoC + sagitta * conic)
 
     # scale so even values pass through ruling
-    T = (np.abs(2 * lpm * Lx) + 0.5).astype(int)
+    T = (np.abs(4 * lpm * Lx) + 0.5).astype(int)
 
     # True/False array that designates if points pass through ruling
     T_mask = T % 2 == 0
@@ -113,8 +119,46 @@ def gram(D, RoC, lpm, z_offset, conic=0, phi=0,
     return x_mask, y_mask
 
 
-def plot_ruling_and_screen(D, RoC, lp_per_mm, z_offset,
-                           conic=0, phi=0, init=True, on_grid=False):
+def plot_gram(D, RoC, lpm, z_offset, conic=0, phi=0, on_grid=False, invert=False):
+    """
+    Plot cross-sections on projection screen at a distance of RoC.
+
+    The idea is to graph both the beam on the ruling and the expected
+    projection on a screen located at the radius-of-curvature away from
+    the focus.  This allows rapid visualization or roughly how much
+    of the Ronchi ruling interacts with the screen.
+
+    Args:
+        D: diameter of mirror [mm]
+        RoC: radius of curvature of mirror [mm]
+        lpm: line pairs per mm [1/mm]
+        conic: conic or Schwartzchild constant [-]
+        phi: CCW rotation of Ronchi ruling from horizontal [radians]
+        on_grid: if False generate points on a grid
+        invert: set to True to invert ruling
+
+    Returns:
+        Nothing.
+    """
+    # generate and plot all the points
+    x, y = gram(D, RoC, lpm, z_offset, conic=conic, phi=phi, invert=invert)
+    plt.plot(x, y, 'o', markersize=0.1, color='white')
+
+    # Draw circle showing spotsize on projection screen
+    lenstest.lenstest.draw_circle(D / 2, color='green')
+
+    # limit plot to slightly larger than the beam size
+    size = D / 2 * 1.2
+    plt.ylim(-size, size)
+    plt.xlim(-size, size)
+    plt.gca().set_facecolor("black")
+    plt.gca().set_aspect('equal')
+    plt.xlabel("(mm)")
+    plt.ylabel("(mm)")
+
+
+def plot_ruling_and_screen(D, RoC, lpm, z_offset,
+                           conic=0, phi=0, init=True, on_grid=False, invert=False):
     """
     Plot cross-sections at Ronchi ruling and projection screen.
 
@@ -129,12 +173,13 @@ def plot_ruling_and_screen(D, RoC, lp_per_mm, z_offset,
     Args:
         D: diameter of mirror [mm]
         RoC: radius of curvature of mirror [mm]
-        lp_per_mm: line pairs per mm [1/mm]
+        lpm: line pairs per mm [1/mm]
         z_offset: axial z_offset of grating from true focus [mm]
         conic: conic or Schwartzchild constant [-]
         phi: CCW rotation of Ronchi ruling from horizontal [radians]
         init: set to False to allow updating plots
         on_grid: if False generate points on a grid
+        invert: set to True to invert ruling
 
     Returns:
         fig: matplotlib Figure object representing the plot
@@ -151,21 +196,22 @@ def plot_ruling_and_screen(D, RoC, lp_per_mm, z_offset,
     plt.gca().set_aspect('equal')
 
     # generate and plot all the points
-    x, y = gram(D, RoC, lp_per_mm, z_offset, conic=conic,
-                phi=phi, on_grid=on_grid, mask=True)
+    x, y = gram(D, RoC, lpm, z_offset, conic=conic,
+                phi=phi, on_grid=on_grid, mask=True, invert=invert)
     plt.plot(x, y, 'o', markersize=0.6, color='white')
 
     # Draw circle showing spotsize at location of ruling
     r_geometric = D / 2 / RoC * z_offset        # mm
     r_diffraction = 0.5 * 1e-6 * (RoC / 2) / D  # mm
-    r_spot = max(r_geometric, r_diffraction)
+    r_line = 1.5/lpm
+    r_spot = max(r_geometric, r_diffraction, r_line)
     lenstest.lenstest.draw_circle(r_spot, color='green')
 
     # limit plot to slightly larger than the beam size
     size = r_spot * 1.2
     plt.ylim(-size, size)
     plt.xlim(-size, size)
-    plt.title('Cross Section at Ronchi Ruling (%.2fmm from Focus)' % z_offset)
+    plt.title('At Ronchi Ruling (%.2fmm from Focus)' % z_offset)
     plt.xlabel("(mm)")
     plt.ylabel("(mm)")
 
@@ -175,7 +221,8 @@ def plot_ruling_and_screen(D, RoC, lp_per_mm, z_offset,
     plt.gca().set_aspect('equal')
 
     # generate and plot all the points
-    x, y = gram(D, RoC, lp_per_mm, z_offset, conic=conic, phi=phi)
+    x, y = gram(D, RoC, lpm, z_offset, 
+                conic=conic, phi=phi, on_grid=on_grid, mask=False, invert=invert)
     plt.plot(x, y, 'o', markersize=0.1, color='white')
 
     # Draw circle showing spotsize on projection screen
@@ -185,7 +232,7 @@ def plot_ruling_and_screen(D, RoC, lp_per_mm, z_offset,
     size = D / 2 * 1.2
     plt.ylim(-size, size)
     plt.xlim(-size, size)
-    plt.title('Cross Section at Screen (%.2fmm from Focus)' % RoC)
+    plt.title('At Screen (%.2fmm from Focus)' % RoC)
     plt.xlabel("(mm)")
     plt.ylabel("(mm)")
 
