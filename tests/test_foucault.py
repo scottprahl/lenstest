@@ -85,7 +85,7 @@ class TestPlotRulingAndScreen(unittest.TestCase):
         RoC = 200
         lpm = 10
         z_offset = 10
-        fig, ax = foucault.plot_ruling_and_screen(D, RoC, lpm, z_offset)
+        fig, ax = foucault.plot_knife_and_screen(D, RoC, lpm, z_offset)
         self.assertIsInstance(fig, plt.Figure)
         self.assertIsInstance(ax[0], plt.Axes)
         self.assertIsInstance(ax[1], plt.Axes)
@@ -96,7 +96,7 @@ class TestPlotRulingAndScreen(unittest.TestCase):
         RoC = 200
         lpm = 10
         z_offset = 10
-        result = foucault.plot_ruling_and_screen(D, RoC, lpm, z_offset)
+        result = foucault.plot_knife_and_screen(D, RoC, lpm, z_offset)
         self.assertEqual(len(result), 2)
 
     def test_plot_ruling_and_screen_grid_parameter(self):
@@ -105,7 +105,7 @@ class TestPlotRulingAndScreen(unittest.TestCase):
         RoC = 200
         lpm = 10
         z_offset = 10
-        foucault.plot_ruling_and_screen(D, RoC, lpm, z_offset, on_grid=True)
+        foucault.plot_knife_and_screen(D, RoC, lpm, z_offset, on_grid=True)
 
 
 class TestPlotLensLayout(unittest.TestCase):
