@@ -105,46 +105,6 @@ def XY_test_points(D, N=100000, on_grid=False):
     return X, Y
 
 
-def knife_polygon2(r, phi, dx):
-    """
-    Create a polygon for a rotated knife edge.
-
-    The polygon is a square that has been rotated by an
-    angle phi from the verticle and then
-
-    Args:
-        r: radius of mirror [mm]
-        phi: rotation from vertical (positive ==> CCW) [radians]
-        dx: horizontal offset [mm]
-    Returns:
-        x, y: coordinates of polygon
-    """
-    r *= 1.5
-    rad = phi + np.pi / 2
-
-    x = np.full(5, (dx + r) * np.cos(phi))
-    y = np.full(5, (dx + r) * np.sin(phi))
-
-    rad = rad + np.pi / 2
-    x[1] = x[0] + 2 * r * np.cos(rad)
-    y[1] = y[0] + 2 * r * np.sin(rad)
-
-    rad = rad + np.pi / 2
-    x[2] = x[1] + r * np.cos(rad)
-    y[2] = y[1] + r * np.sin(rad)
-
-    rad = rad + np.pi / 2
-    x[3] = x[2] + 2 * r * np.cos(rad)
-    y[3] = y[2] + 2 * r * np.sin(rad)
-
-#    rad = rad + np.pi / 2
-#    x[4] = x[3] + r * np.cos(rad)
-#    y[4] = y[3] + r * np.sin(rad)
-
-    # x[5] = x[0] and y[5] = y[0]
-    return x, y
-
-
 def knife_polygon(s, phi, ds):
     """
     Create a polygon for a rotated knife edge.
@@ -153,23 +113,23 @@ def knife_polygon(s, phi, ds):
     then rotated counter clockwise.
 
     When the shift is zero, then the edge of the knife edge is at the origin.
-    Specifing a shift translates the knife edge across the origin.
+    Specifing a shift translates the knife edge across the origin.  Then the
+    knife is rotated about the origin by an angle phi.
 
     Args:
-        s: short side of the rectangle [mm]
-        phi: CCW rotation              [radians]
-        ds: shift of knife edge        [mm]
+        s: short side of the rectangle   [mm]
+        phi: CCW rotation from vertical  [radians]
+        ds: shift of knife edge          [mm]
     Returns:
-        x, y: coordinates of polygon
+        x, y: coordinates of knife polygon
     """
-    # vertical s x 2s rectangle with center of edge shifted by dx
-    xp = np.array([0,s,s,0,0]) + ds
-    yp = np.array([s,s,-s,-s,s])
+    # vertical s x 2s rectangle with center of edge shifted by ds
+    xp = np.array([-s,-s,0,0,-s]) + ds
+    yp = np.array([-s,s,s,-s,-s])
 
     # rotate rectangle CCW
-    alpha = phi + np.pi
-    x = xp * np.cos(alpha) - yp * np.sin(alpha)
-    y = xp * np.sin(alpha) + yp * np.cos(alpha)
+    x = xp * np.cos(phi) - yp * np.sin(phi)
+    y = xp * np.sin(phi) + yp * np.cos(phi)
 
     return x,y
 
