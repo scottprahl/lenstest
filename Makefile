@@ -17,6 +17,9 @@ doccheck:
 	-pydocstyle lenstest/__init__.py
 	-pydocstyle lenstest/ronchi.py
 	-pydocstyle lenstest/foucault.py
+	-pydocstyle tests/test_lenstest.py
+	-pydocstyle tests/test_ronchi.py
+	-pydocstyle tests/test_foucault.py
 
 rstcheck:
 	-rstcheck README.rst
