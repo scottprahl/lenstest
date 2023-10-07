@@ -28,7 +28,6 @@ jobs:
 
       - name: Install package and dependencies
         run: |
-          pip install -U pip setuptools wheel
           pip install -r requirements.txt
           pip install -e .  # Install the current package in editable mode
 
