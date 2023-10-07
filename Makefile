@@ -40,14 +40,15 @@ html:
 clean:
 	rm -rf .ipynb_checkpoints
 	rm -rf .pytest_cache
+	rm -rf .ruff_cache
 	rm -rf __pycache__
 	rm -rf dist
-	rm -rf lenstest.egg-info
-	rm -rf lenstest/__init__.pyc
-	rm -rf lenstest/__pycache__
 	rm -rf docs/_build
 	rm -rf docs/api
 	rm -rf docs/.ipynb_checkpoints
+	rm -rf lenstest.egg-info
+	rm -rf lenstest/__init__.pyc
+	rm -rf lenstest/__pycache__
 	rm -rf tests/__pycache__
 
 test:

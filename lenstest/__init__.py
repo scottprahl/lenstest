@@ -4,7 +4,7 @@ Non-interferometric Lens Testing.
 Documentation and examples are at <https://lenstest.readthedocs.io>
 
 """
-__version__ = '0.5.1'
+__version__ = '0.9.0'
 __author__ = 'Scott Prahl'
 __email__ = 'scott.prahl@oit.edu'
 __copyright__ = '2021-23, Scott Prahl'
