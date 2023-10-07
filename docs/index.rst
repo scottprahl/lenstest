@@ -5,25 +5,36 @@
    :titlesonly:
 
 .. toctree::
+   :caption: Sagitta
+   :hidden:
+
+   sagitta
+
+.. toctree::
    :caption: Ronchigrams
    :hidden:
 
-   ronchi
-   ronchi-dynamic
    ronchi-basic
+   ronchi
+
+.. toctree::
+   :caption: Ronchigram Details
+   :hidden:
+
+   ronchi-origin
+   ronchi-upton
 
 .. toctree::
    :caption: Foucault Knife Edge
    :hidden:
 
    foucault
-   foucault-dynamic
 
 .. toctree::
    :caption: API
    :hidden:
 
-   lenstest
+   lenstest   
 
 .. toctree::
    :caption: Versions
