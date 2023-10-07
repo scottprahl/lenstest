@@ -56,7 +56,7 @@ Installation
     
     pip install lenstest
 
-or ``conda``::
+* or with ``conda``::
 
     conda install -c conda-forge lenstest
 
