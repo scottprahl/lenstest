@@ -3,9 +3,9 @@ name: test
 
 on:    # yamllint disable-line rule:truthy
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
   workflow_dispatch:  # allow manual triggering
 
 jobs:
@@ -30,6 +30,7 @@ jobs:
         run: |
           pip install -U pip setuptools wheel
           pip install -r requirements.txt
+          pip install -e .  # Install the current package in editable mode
 
       - name: Test with pytest
         run: |
