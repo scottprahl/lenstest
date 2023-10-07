@@ -69,7 +69,7 @@ or use immediately by clicking the Google Colaboratory button below
 Foucault Example
 ----------------
 
-..code-block:: python
+.. code-block:: python
 
     import numpy as np
     import matplotlib.pyplot as plt
