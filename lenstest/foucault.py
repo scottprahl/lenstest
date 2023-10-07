@@ -299,7 +299,7 @@ def plot_lens_layout(D, RoC, x_offset, z_offset):
 
     # draw the lens
     lenstest.lenstest.draw_lens(D, RoC, -RoC)
-    plt.text(-RoC, -D/2, 'lens/mirror', ha='right', rotation=90, color='blue')
+    plt.text(-RoC, -D/2, 'lens/mirror', ha='right', rotation=90, color='blue', clip_on=True)
 
 # focus plane
 #    plt.text(0, D/2, ' focus', ha='left')
@@ -308,17 +308,17 @@ def plot_lens_layout(D, RoC, x_offset, z_offset):
     # optical axis
     plt.axhline(0, color='blue', linewidth = 1)
     plt.text(-RoC*0.96, 0, 'optical axis ', ha='left', va='center', color='blue',
-             bbox={"facecolor": "white", "edgecolor":"white"})
+             bbox={"facecolor": "white", "edgecolor":"white"}, clip_on=True)
 
     # knife
 #    plt.axvline(z_offset, color='black', linewidth = 0.5)
     plt.plot([z_offset, z_offset],[x_offset, -D/2], lw=2, color='black')
     plt.text(z_offset, -D/2, 'knife', ha='center', rotation=90, color='black',
-             bbox={"facecolor": "white", "edgecolor":"white"})
+             bbox={"facecolor": "white", "edgecolor":"white"}, clip_on=True)
 
     # screen
     plt.axvline(RoC, color='blue', linewidth = 2)
-    plt.text(RoC, -D/2, 'projection screen', ha='left', rotation=90, color='blue')
+    plt.text(RoC, -D/2, 'projection screen', ha='left', rotation=90, color='blue', clip_on=True)
 
     plt.xlabel('Distance from focus (mm)')
     plt.ylabel('Height above optical axis (mm)')
@@ -371,7 +371,7 @@ def plot_mirror_layout(D, RoC, x_offset, z_offset):
 
     # draw the lens
     lenstest.lenstest.draw_mirror(D, RoC, vertex=-RoC)
-    plt.text(-RoC, -D/2, 'lens/mirror', ha='right', rotation=90, color='blue')
+    plt.text(-RoC, -D/2, 'lens/mirror', ha='right', rotation=90, color='blue', clip_on=True)
 
 # focus plane
 #    plt.text(0, D/2, ' focus', ha='left')
@@ -380,17 +380,17 @@ def plot_mirror_layout(D, RoC, x_offset, z_offset):
     # optical axis
     plt.axhline(0, color='blue', linewidth = 1)
     plt.text(-RoC*0.96, 0, 'optical axis ', ha='left', va='center', color='blue',
-             bbox={"facecolor": "white", "edgecolor":"white"})
+             bbox={"facecolor": "white", "edgecolor":"white"}, clip_on=True)
 
     # knife
 #    plt.axvline(z_offset, color='black', linewidth = 0.5)
     plt.plot([z_offset, z_offset],[x_offset, -D/2], lw=2, color='black')
     plt.text(z_offset, -D/2, 'knife', ha='center', rotation=90, color='black',
-             bbox={"facecolor": "white", "edgecolor":"white"})
+             bbox={"facecolor": "white", "edgecolor":"white"}, clip_on=True)
 
     # screen
     plt.axvline(RoC, color='blue', linewidth = 2)
-    plt.text(RoC, -D/2, 'projection screen', ha='left', rotation=90, color='blue')
+    plt.text(RoC, -D/2, 'projection screen', ha='left', rotation=90, color='blue', clip_on=True)
 
     plt.xlabel('Distance from focus (mm)')
     plt.ylabel('Height above optical axis (mm)')
