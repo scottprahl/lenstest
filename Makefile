@@ -28,6 +28,11 @@ rstcheck:
 	-rstcheck docs/changelog.rst
 	-rstcheck --ignore-directives automodapi docs/lenstest.rst
 
+yamlcheck:
+	-yamllint .github/workflows/citation.yaml
+	-yamllint .github/workflows/pypi.yaml
+	-yamllint .github/workflows/test.yaml
+
 html:
 	$(SPHINXBUILD) -b html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
 	open docs/_build/index.html
@@ -46,12 +51,16 @@ clean:
 	rm -rf tests/__pycache__
 
 test:
-	pytest
+	pytest --verbose tests/test_foucault.py
+	pytest --verbose tests/test_lenstest.py
+	pytest --verbose tests/test_ronchi.py
+	pytest --verbose tests/test_all_notebooks.py
 
 rcheck:
 	make clean
 	make rstcheck
-	make lintcheck
+	make yamlcheck
+	make lint
 	make test
 	make html
 	check-manifest
