@@ -1,52 +1,74 @@
 lenstest
-=========
+========
 
 by Scott Prahl
 
-.. image:: https://img.shields.io/pypi/v/lenstest.svg
+.. image:: https://img.shields.io/pypi/v/lenstest?color=68CA66
    :target: https://pypi.org/project/lenstest/
+   :alt: pypi
 
-.. image:: https://colab.research.google.com/assets/colab-badge.svg
-   :target: https://colab.research.google.com/github/scottprahl/lenstest/blob/master
-
-.. image:: https://mybinder.org/badge_logo.svg
-   :target: https://mybinder.org/v2/gh/scottprahl/lenstest/master?filepath=docs
-
-.. image:: https://img.shields.io/badge/readthedocs-latest-blue.svg
-   :target: https://lenstest.readthedocs.io
-
-.. image:: https://img.shields.io/badge/github-code-green.svg
+.. image:: https://img.shields.io/github/v/tag/scottprahl/lenstest?label=github&color=v
    :target: https://github.com/scottprahl/lenstest
+   :alt: github
 
-.. image:: https://img.shields.io/badge/MIT-license-yellow.svg
+.. image:: https://img.shields.io/conda/vn/conda-forge/lenstest?label=conda&color=68CA66
+   :target: https://github.com/conda-forge/lenstest-feedstock
+   :alt: conda
+
+.. image:: https://zenodo.org/badge/107437651.svg
+   :target: https://zenodo.org/badge/latestdoi/107437651
+   :alt: zenodo
+
+|
+
+.. image:: https://img.shields.io/github/license/scottprahl/lenstest?color=68CA66
    :target: https://github.com/scottprahl/lenstest/blob/master/LICENSE.txt
+   :alt: License
+
+.. image:: https://github.com/scottprahl/lenstest/actions/workflows/test.yaml/badge.svg
+   :target: https://github.com/scottprahl/lenstest/actions/workflows/test.yaml
+   :alt: testing
+
+.. image:: https://readthedocs.org/projects/lenstest/badge?color=68CA66
+  :target: https://lenstest.readthedocs.io
+  :alt: docs
+
+.. image:: https://img.shields.io/pypi/dm/lenstest?color=68CA66
+   :target: https://pypi.org/project/lenstest/
+   :alt: Downloads
 
 __________
 
-A collection of routines for non-interferometric testing of lenses and mirrors.
+`lenstest` is a collection of routines for non-interferometric testing of lenses
+and mirrors. Developed by Scott Prahl, this package contains code for the
+Foucault Knife Edge Test and the Ronchi Ruling Test. With `lenstest`, users can
+test the quality of their lenses and mirrors without the need for
+interferometric equipment. 
 
-This implementation contains code for
+Detailed documentation is available at
+<https://lenstest.readthedocs.io>.
 
-    * Foucault Knife Edge Test
-    * Ronchi Ruling Test
 
-Detailed documentation is at <https://lenstest.readthedocs.io>
+Installation
+------------
 
-Using lenstest
--------------------
-
-1. Install with ``pip``::
+* Install with ``pip``::
     
-    pip install --user lenstest
+    pip install lenstest
 
-2. or `run this code in the cloud using Google Collaboratory <https://colab.research.google.com/github/scottprahl/lenstest/blob/master>`_ by selecting the Jupyter notebook that interests you.
+or ``conda``::
 
-3. use `binder <https://mybinder.org/v2/gh/scottprahl/lenstest/master?filepath=docs>`_ which will create a new environment that allows you to run Jupyter notebooks.  This takes a bit longer to start, but it automatically installs ``lenstest``.
+    conda install -c conda-forge lenstest
 
-4. clone the `lenstest github repository <https://github.com/scottprahl/lenstest>`_ and then add the repository to your ``PYTHONPATH`` environment variable
+or use immediately by clicking the Google Colaboratory button below
+
+.. image:: https://colab.research.google.com/assets/colab-badge.svg
+   :target: https://colab.research.google.com/github/scottprahl/lenstest/blob/master
+  :alt: Colab
+
 
 
 License
 -------
 
-lenstest is licensed under the terms of the MIT license.
+`lenstest` is licensed under the terms of the MIT license.
