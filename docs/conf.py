@@ -49,8 +49,9 @@ napoleon_use_rtype = False
 
 # List of patterns, relative to source directory, of files to ignore
 exclude_patterns = ['_build',
-                    '.tox',
                     '**.ipynb_checkpoints',
+                    'ronchi-dynamic.ipynb'
+                    'foucault-dynamic.ipyb'
                     ]
 
 # I execute the notebooks manually in advance. 
