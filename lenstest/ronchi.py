@@ -21,7 +21,7 @@ __all__ = ('gram',
 
 def _transmitted(RoC, lpm, z_offset, X, Y, conic=0, mask=False, phi=0):
     """
-    Determine if X,Y points are transmitted through Ronchi ruling.
+    Determine if X, Y points are transmitted through Ronchi ruling.
 
     This assumes that the one of the opaque lines of the ruling is centered on
     the optical axis.
@@ -69,7 +69,7 @@ def _transmitted(RoC, lpm, z_offset, X, Y, conic=0, mask=False, phi=0):
 
 
 def gram(D, RoC, lpm, z_offset, conic=0, phi=0,
-               N=100000, invert=False, on_grid=False, mask=False):
+         N=100000, invert=False, on_grid=False, mask=False):
     """
     Create points that pass through a Ronchi ruling.
 
@@ -259,36 +259,36 @@ def plot_lens_layout(D, f, z_offset):
     RoC = f          # for lens assuming n=1.5 and biconvex lens
 
     # point source
-    plt.text(-4*f, D*0.05, 'point source', ha='left', rotation=90, color='blue')
+    plt.text(-4 * f, D * 0.05, 'point source', ha='left', rotation=90, color='blue')
 
     # marginal rays with lens at -2f
     DD = 0.8 * D
-    plt.plot([-4*f,-2*f, 2*f], [0,DD/2,-DD/2], color='black', linewidth=1)
-    plt.plot([-4*f,-2*f, 2*f], [0,-DD/2,DD/2], color='black', linewidth=1)
-    plt.plot([-4*f,-2*f, 2*f], [0,DD/4,-DD/4], color='black', linewidth=1)
-    plt.plot([-4*f,-2*f, 2*f], [0,-DD/4,DD/4], color='black', linewidth=1)
+    plt.plot([-4 * f, -2 * f, 2 * f], [0, DD / 2, -DD / 2], color='black', linewidth=1)
+    plt.plot([-4 * f, -2 * f, 2 * f], [0, -DD / 2, DD / 2], color='black', linewidth=1)
+    plt.plot([-4 * f, -2 * f, 2 * f], [0, DD / 4, -DD / 4], color='black', linewidth=1)
+    plt.plot([-4 * f, -2 * f, 2 * f], [0, -DD / 4, DD / 4], color='black', linewidth=1)
 
     # draw the lens
-    lenstest.lenstest.draw_lens(D, RoC, -2*f)
-    plt.text(-2*f, D/2, 'lens under test', ha='left', color='blue')
+    lenstest.lenstest.draw_lens(D, RoC, -2 * f)
+    plt.text(-2 * f, D / 2, 'lens under test', ha='left', color='blue')
 
 # focus plane
-#    plt.text(0, D/2, ' focus', ha='left')
-#    plt.axvline(0, color='black', linewidth = 1)
+#    plt.text(0, D / 2, ' focus', ha='left')
+#    plt.axvline(0, color='black', linewidth=1)
 
     # optical axis
-    plt.axhline(0, color='blue', linewidth = 1)
-#    plt.text(-RoC*0.9, 0, 'optical axis ', ha='left', va='center', color='blue',
+    plt.axhline(0, color='blue', linewidth=1)
+#    plt.text(-RoC * 0.9, 0, 'optical axis ', ha='left', va='center', color='blue',
 #             bbox={"facecolor": "white", "edgecolor":"white"})
 
     # Ronchi
 #    plt.axvline(z_offset, color='black', linewidth = 0.5)
-    plt.plot([z_offset, z_offset],[D/2, -D/2], ls='--', lw=2, color='black')
-    plt.text(z_offset, D/2, ' Ronchi Ruling', ha='left', color='black')
+    plt.plot([z_offset, z_offset], [D / 2, -D / 2], ls='--', lw=2, color='black')
+    plt.text(z_offset, D / 2, ' Ronchi Ruling', ha='left', color='black')
 
     # screen
-    plt.axvline(2*f, color='blue', linewidth = 2)
-    plt.text(2*f*1.02, -D/2, 'projection screen', ha='left', rotation=90, color='blue')
+    plt.axvline(2 * f, color='blue', linewidth=2)
+    plt.text(2 * f * 1.02, -D / 2, 'projection screen', ha='left', rotation=90, color='blue')
 
     plt.xlabel('Distance from focus (mm)')
     plt.ylabel('Height above optical axis (mm)')
@@ -311,41 +311,41 @@ def plot_mirror_layout(D, RoC, z_offset):
     fig, ax = plt.subplots(figsize=(10, 5))
 
     # initial height offset
-    yo = D/8
+    yo = D / 8
 
     # point source
     plt.text(0, yo, ' point source', ha='left', va='center', color='blue')
 
     # marginal rays with mirror at -RoC
     DD = 0.8 * D
-    y_screen = -yo-(DD/2+yo)/RoC*D
-    plt.plot([0,-RoC, 0, D], [yo,DD/2,-yo,y_screen], color='blue', linewidth=1)
-#    plt.plot([0,-RoC, 0], [yo,DD/4,-yo], color='black', linewidth=1)
-#    plt.plot([0,-RoC, 0], [yo,-DD/4,-yo], color='black', linewidth=1)
-    y_screen = -yo-(DD/2-yo)/RoC*D
-    plt.plot([0,-RoC, 0, D], [yo,-DD/2,-yo,-y_screen-2*yo], color='black', linewidth=1)
+    y_screen = -yo - (DD / 2 + yo) / RoC * D
+    plt.plot([0, -RoC, 0, D], [yo, DD / 2, -yo, y_screen], color='blue', linewidth=1)
+#    plt.plot([0, -RoC, 0], [yo, DD / 4, -yo], color='black', linewidth=1)
+#    plt.plot([0, -RoC, 0], [yo, -DD / 4, -yo], color='black', linewidth=1)
+    y_screen = -yo - (DD / 2 - yo) / RoC * D
+    plt.plot([0, -RoC, 0, D], [yo, -DD / 2, -yo, -y_screen - 2 * yo], color='black', linewidth=1)
 
     # draw the mirror
     lenstest.lenstest.draw_mirror(D, RoC, -RoC)
-    plt.text(-RoC, D/2, 'mirror under test', ha='left', color='blue')
+    plt.text(-RoC, D / 2, 'mirror under test', ha='left', color='blue')
 
 # focus plane
-#    plt.text(0, D/2, ' focus', ha='left')
+#    plt.text(0, D / 2, ' focus', ha='left')
 #    plt.axvline(0, color='black', linewidth = 1)
 
     # optical axis
-    plt.axhline(0, color='blue', linewidth = 1)
-#    plt.text(-RoC*0.9, 0, 'optical axis ', ha='left', va='center', color='blue',
+    plt.axhline(0, color='blue', linewidth=1)
+#    plt.text(-RoC * 0.9, 0, 'optical axis ', ha='left', va='center', color='blue',
 #             bbox={"facecolor": "white", "edgecolor":"white"})
 
     # Ronchi
 #    plt.axvline(z_offset, color='black', linewidth = 0.5)
-    plt.plot([z_offset, z_offset],[0, -D/2], ls='--', lw=2, color='black')
-    plt.text(z_offset, -D/2, ' Ronchi Ruling', ha='right', color='black')
+    plt.plot([z_offset, z_offset], [0, -D / 2], ls='--', lw=2, color='black')
+    plt.text(z_offset, -D / 2, ' Ronchi Ruling', ha='right', color='black')
 
     # screen
-    plt.axvline(D, color='blue', linewidth = 2)
-    plt.text(D*1.02, -D/2, 'projection screen', ha='left', rotation=90, color='blue')
+    plt.axvline(D, color='blue', linewidth=2)
+    plt.text(D * 1.02, -D / 2, 'projection screen', ha='left', rotation=90, color='blue')
 
     plt.xlabel('Distance from focus (mm)')
     plt.ylabel('Height above optical axis (mm)')

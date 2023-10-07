@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import lenstest
 
+
 class TestGram(unittest.TestCase):
     """Evaluate gram functionality."""
 

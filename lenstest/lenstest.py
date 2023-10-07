@@ -23,7 +23,7 @@ __all__ = ('sagitta',
 
 def sagitta(RoC, conic, X, Y, A=0, D=0):
     """
-    Calculate sagitta for conic surface at points X,Y.
+    Calculate sagitta for conic surface at points X, Y.
 
     This assumes that the point source of light is located at the center
     of the mirror radius of curvature.
@@ -48,7 +48,7 @@ def sagitta(RoC, conic, X, Y, A=0, D=0):
         D: defocus [1/mm]
 
     Returns:
-        sagitta at each (x,y) point [mm]
+        sagitta at each (x, y) point [mm]
     """
     # find the x value where the ray passes through the Ronchi ruling
     rho_sqr = X**2 + Y**2
@@ -124,14 +124,14 @@ def knife_polygon(s, phi, ds):
         x, y: coordinates of knife polygon
     """
     # vertical s x 2s rectangle with center of edge shifted by ds
-    xp = np.array([-s,-s,0,0,-s]) + ds
-    yp = np.array([-s,s,s,-s,-s])
+    xp = np.array([-s, -s, 0, 0, -s]) + ds
+    yp = np.array([-s, s, s, -s, -s])
 
     # rotate rectangle CCW
     x = xp * np.cos(phi) - yp * np.sin(phi)
     y = xp * np.sin(phi) + yp * np.cos(phi)
 
-    return x,y
+    return x, y
 
 
 def circle_polygon(R, X0=0, Y0=0):
@@ -176,7 +176,7 @@ def draw_lens(D, RoC, middle=0):
     dx = RoC + x
     dx -= dx[0]     # offset surface to center the lens on the vertex
 
-    xx = np.concatenate((middle-dx, middle+dx))
+    xx = np.concatenate((middle - dx, middle + dx))
     yy = np.concatenate((y, -y))
 
     plt.fill(xx, yy, color='gray', alpha=0.8)
@@ -184,17 +184,17 @@ def draw_lens(D, RoC, middle=0):
 
 def draw_mirror(D, RoC, vertex=0):
     """Draw one face of a mirror."""
-    theta_max = np.arctan2(D/2, RoC)
-    theta = np.linspace(-theta_max,theta_max, 51)
+    theta_max = np.arctan2(D / 2, RoC)
+    theta = np.linspace(-theta_max, theta_max, 51)
     x = -RoC * np.cos(theta)
     y = -RoC * np.sin(theta)
     dx = RoC + x
     dx -= dx[0]     # offset surface to center the lens on the vertex
 
-    xx_last = np.array([vertex-dx[0]-D/10,vertex-dx[0]-D/10,vertex-dx[-1]])
-    yy_last = np.array([y[-1],y[0],y[0]])
-    xx = np.concatenate((vertex+dx,xx_last))
-    yy = np.concatenate((y,yy_last))
+    xx_last = np.array([vertex - dx[0] - D / 10, vertex - dx[0] - D / 10, vertex - dx[-1]])
+    yy_last = np.array([y[-1], y[0], y[0]])
+    xx = np.concatenate((vertex + dx, xx_last))
+    yy = np.concatenate((y, yy_last))
 
     plt.fill(xx, yy, color='gray', alpha=0.8)
 

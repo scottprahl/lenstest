@@ -22,7 +22,7 @@ __all__ = ('gram',
 
 def _transmitted(RoC, x_offset, z_offset, X, Y, conic=0, phi=0, mask=False, A=0):
     """
-    Determine if X,Y points are transmitted past knife edge.
+    Determine if X, Y points are transmitted past knife edge.
 
     This assumes that the point source of light is located at the center
     of the mirror madius of curvature, RoC (or two focal lengths from a lens).
@@ -110,7 +110,7 @@ def plot_gram(D, RoC, x_offset, z_offset,
               conic=0, phi=0, A=0, on_grid=False):
     """
     Plot the Foucault knife edge image.
-    
+
     The idea is to graph both the beam on the knife edge and the expected
     projection on a screen located at the radius-of-curvature away from
     the focus.  This allows rapid visualization or roughly how much
@@ -147,17 +147,17 @@ def plot_gram(D, RoC, x_offset, z_offset,
              color='white',
              ha='center', va='top',
              transform=plt.gca().transAxes
-    )
+             )
     plt.title("Screen is %.0f mm from Focus" % RoC)
     plt.gca().set_aspect('equal')
     plt.gca().set_facecolor("black")
 
 
 def plot_knife_and_screen(D, RoC, x_offset, z_offset,
-                           conic=0, phi=0, init=True, A=0, on_grid=False):
+                          conic=0, phi=0, init=True, A=0, on_grid=False):
     """
     Plot the Foucault knife edge image.
-    
+
     The idea is to graph both the beam on the knife edge and the expected
     projection on a screen located at the radius-of-curvature away from
     the focus.  This allows rapid visualization or roughly how much
@@ -182,7 +182,7 @@ def plot_knife_and_screen(D, RoC, x_offset, z_offset,
     """
 
     if init:
-        fig, ax = plt.subplots(1, 2, figsize=(10,4))
+        fig, ax = plt.subplots(1, 2, figsize=(10, 4))
     else:
         fig, ax = None, None
 
@@ -202,7 +202,7 @@ def plot_knife_and_screen(D, RoC, x_offset, z_offset,
     lenstest.lenstest.draw_circle(r_spot, color='blue')
 
     # we always want to see the edge of the knife
-    size = max(r_spot * 2.2, abs(2*x_offset))
+    size = max(r_spot * 2.2, abs(2 * x_offset))
     plt.ylim(-size, size)
     plt.xlim(-size, size)
 
@@ -242,13 +242,13 @@ def plot_knife_and_screen(D, RoC, x_offset, z_offset,
     plt.title("D=%.1fmm, RoC=%.1fmm, K=%.2f" % (D, RoC, conic))
     plt.xlabel("Screen x (mm)")
     plt.ylabel("Screen y (mm)")
-    cs=lenstest.lenstest.conic_string(conic)
+    cs = lenstest.lenstest.conic_string(conic)
     plt.text(0.5, 0.97,
              "Mirror/Lens is %s " % cs,
              color='white',
              ha='center', va='top',
              transform=plt.gca().transAxes
-    )
+             )
     plt.title("%.0fmm from Focus" % RoC)
 
     return fig, ax
@@ -270,60 +270,60 @@ def plot_lens_layout(D, RoC, x_offset, z_offset):
     fig, ax = plt.subplots(figsize=(10, 5))
 
     # slope of marginal ray and ray touching knife
-    m2 = (D/2)/RoC
+    m2 = (D / 2) / RoC
     if z_offset == 0:
         m = 0
     else:
-        m = x_offset/z_offset
+        m = x_offset / z_offset
 
     # account for knife completely missing or blocking beam
     m = min(m, m2)
-    m = max(m,-m2)
+    m = max(m, -m2)
 
     # marginal rays
-    plt.plot([-2*RoC,-RoC, RoC], [0,D/2,-D/2], color='black', linewidth=1)
-    plt.plot([-2*RoC,-RoC, RoC], [0,-D/2,D/2], color='black', linewidth=1)
-    plt.plot(-2*RoC, 0, 'ok', markersize=5)
+    plt.plot([-2 * RoC, -RoC, RoC], [0, D / 2, -D / 2], color='black', linewidth=1)
+    plt.plot([-2 * RoC, -RoC, RoC], [0, -D / 2, D / 2], color='black', linewidth=1)
+    plt.plot(-2 * RoC, 0, 'ok', markersize=5)
 
     # ray touching the knife edge
-    plt.plot([-2*RoC,-RoC, RoC], [0,-m*RoC, m*RoC], color='black', linewidth=1, linestyle='--')
+    plt.plot([-2 * RoC, -RoC, RoC], [0, -m * RoC, m * RoC],
+             color='black', linewidth=1, linestyle='--')
 
     # shade blocked light
     if z_offset < 0:
-        plt.fill_between([z_offset, RoC], [m*z_offset, m*RoC],
-                         [z_offset*m2, D/2], color='darkgray')
+        plt.fill_between([z_offset, RoC], [m * z_offset, m * RoC],
+                         [z_offset * m2, D / 2], color='darkgray')
     else:
-        plt.fill_between([z_offset, RoC], [m*z_offset, m*RoC],
-                         [-z_offset*m2, -D/2], color='darkgray')
+        plt.fill_between([z_offset, RoC], [m * z_offset, m * RoC],
+                         [-z_offset * m2, -D / 2], color='darkgray')
 
     # draw the lens
     lenstest.lenstest.draw_lens(D, RoC, -RoC)
-    plt.text(-RoC, -D/2, 'lens/mirror', ha='right', rotation=90, color='blue', clip_on=True)
+    plt.text(-RoC, -D / 2, 'lens / mirror', ha='right', rotation=90, color='blue', clip_on=True)
 
 # focus plane
-#    plt.text(0, D/2, ' focus', ha='left')
+#    plt.text(0, D / 2, ' focus', ha='left')
 #    plt.axvline(0, color='black', linewidth = 1)
 
     # optical axis
-    plt.axhline(0, color='blue', linewidth = 1)
-    plt.text(-RoC*0.96, 0, 'optical axis ', ha='left', va='center', color='blue',
-             bbox={"facecolor": "white", "edgecolor":"white"}, clip_on=True)
+    plt.axhline(0, color='blue', linewidth=1)
+    plt.text(-RoC * 0.96, 0, 'optical axis ', ha='left', va='center', color='blue',
+             bbox={"facecolor": "white", "edgecolor": "white"}, clip_on=True)
 
     # knife
 #    plt.axvline(z_offset, color='black', linewidth = 0.5)
-    plt.plot([z_offset, z_offset],[x_offset, -D/2], lw=2, color='black')
-    plt.text(z_offset, -D/2, 'knife', ha='center', rotation=90, color='black',
-             bbox={"facecolor": "white", "edgecolor":"white"}, clip_on=True)
+    plt.plot([z_offset, z_offset], [x_offset, -D / 2], lw=2, color='black')
+    plt.text(z_offset, -D / 2, 'knife', ha='center', rotation=90, color='black',
+             bbox={"facecolor": "white", "edgecolor": "white"}, clip_on=True)
 
     # screen
-    plt.axvline(RoC, color='blue', linewidth = 2)
-    plt.text(RoC, -D/2, 'projection screen', ha='left', rotation=90, color='blue', clip_on=True)
+    plt.axvline(RoC, color='blue', linewidth=2)
+    plt.text(RoC, -D / 2, 'projection screen', ha='left', rotation=90, color='blue', clip_on=True)
 
     plt.xlabel('Distance from focus (mm)')
     plt.ylabel('Height above optical axis (mm)')
     plt.title('Foucault Knife Test Showing Shading of Screen')
     return fig, ax
-
 
 
 def plot_mirror_layout(D, RoC, x_offset, z_offset):
@@ -342,54 +342,55 @@ def plot_mirror_layout(D, RoC, x_offset, z_offset):
     # slope of marginal ray and ray touching knife
     fig, ax = plt.subplots(figsize=(10, 5))
 
-    m2 = (D/2)/RoC
+    m2 = (D / 2) / RoC
     if z_offset == 0:
         m = 0
     else:
-        m = x_offset/z_offset
+        m = x_offset / z_offset
 
     # account for knife completely missing or blocking beam
     m = min(m, m2)
-    m = max(m,-m2)
+    m = max(m, -m2)
 
     # marginal rays
-    plt.plot(0, D/20, 'ok', markersize=5)
-    plt.plot([0,-RoC, RoC], [D/20, D/2,-D/2], color='black', linewidth=1)
-    plt.plot([0,-RoC, RoC], [D/20, -D/2,D/2], color='black', linewidth=1)
+    plt.plot(0, D / 20, 'ok', markersize=5)
+    plt.plot([0, -RoC, RoC], [D / 20, D / 2, -D / 2], color='black', linewidth=1)
+    plt.plot([0, -RoC, RoC], [D / 20, -D / 2, D / 2], color='black', linewidth=1)
 
     # ray touching the knife edge
-    plt.plot([0,-RoC, RoC], [D/20,-m*RoC, m*RoC], color='black', linewidth=1, linestyle='--')
+    plt.plot([0, -RoC, RoC], [D / 20, -m * RoC, m * RoC],
+             color='black', linewidth=1, linestyle='--')
 
     # shade blocked light
     if z_offset < 0:
-        plt.fill_between([z_offset, RoC], [m*z_offset, m*RoC],
-                         [z_offset*m2, D/2], color='darkgray')
+        plt.fill_between([z_offset, RoC], [m * z_offset, m * RoC],
+                         [z_offset * m2, D / 2], color='darkgray')
     else:
-        plt.fill_between([z_offset, RoC], [m*z_offset, m*RoC],
-                         [-z_offset*m2, -D/2], color='darkgray')
+        plt.fill_between([z_offset, RoC], [m * z_offset, m * RoC],
+                         [-z_offset * m2, -D / 2], color='darkgray')
 
     # draw the lens
     lenstest.lenstest.draw_mirror(D, RoC, vertex=-RoC)
-    plt.text(-RoC, -D/2, 'lens/mirror', ha='right', rotation=90, color='blue', clip_on=True)
+    plt.text(-RoC, -D / 2, 'lens / mirror', ha='right', rotation=90, color='blue', clip_on=True)
 
 # focus plane
-#    plt.text(0, D/2, ' focus', ha='left')
+#    plt.text(0, D / 2, ' focus', ha='left')
 #    plt.axvline(0, color='black', linewidth = 1)
 
     # optical axis
-    plt.axhline(0, color='blue', linewidth = 1)
-    plt.text(-RoC*0.96, 0, 'optical axis ', ha='left', va='center', color='blue',
-             bbox={"facecolor": "white", "edgecolor":"white"}, clip_on=True)
+    plt.axhline(0, color='blue', linewidth=1)
+    plt.text(-RoC * 0.96, 0, 'optical axis ', ha='left', va='center', color='blue',
+             bbox={"facecolor": "white", "edgecolor": "white"}, clip_on=True)
 
     # knife
 #    plt.axvline(z_offset, color='black', linewidth = 0.5)
-    plt.plot([z_offset, z_offset],[x_offset, -D/2], lw=2, color='black')
-    plt.text(z_offset, -D/2, 'knife', ha='center', rotation=90, color='black',
-             bbox={"facecolor": "white", "edgecolor":"white"}, clip_on=True)
+    plt.plot([z_offset, z_offset], [x_offset, -D / 2], lw=2, color='black')
+    plt.text(z_offset, -D / 2, 'knife', ha='center', rotation=90, color='black',
+             bbox={"facecolor": "white", "edgecolor": "white"}, clip_on=True)
 
     # screen
-    plt.axvline(RoC, color='blue', linewidth = 2)
-    plt.text(RoC, -D/2, 'projection screen', ha='left', rotation=90, color='blue', clip_on=True)
+    plt.axvline(RoC, color='blue', linewidth=2)
+    plt.text(RoC, -D / 2, 'projection screen', ha='left', rotation=90, color='blue', clip_on=True)
 
     plt.xlabel('Distance from focus (mm)')
     plt.ylabel('Height above optical axis (mm)')
