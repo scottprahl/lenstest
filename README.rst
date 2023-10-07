@@ -66,7 +66,49 @@ or use immediately by clicking the Google Colaboratory button below
    :target: https://colab.research.google.com/github/scottprahl/lenstest/blob/master
   :alt: Colab
 
+Examples
+--------
 
+10 meter parabolic mirror comparison.
+
+.. code-block:: python
+
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import lenstest
+
+    D = 10000  # 10 meter mirror
+    F = 5
+    conic = -1
+    lp_per_mm = 0.133  # grating frequency lp/mm
+
+    RoC =  F * D * 2
+
+    print("    Mirror Diameter = %.0f mm" % D)
+    print("                 F# = %.1f" % F)
+    print("Radius of Curvature = %.0f mm" % RoC)
+    print("       Focal Length = %.0f mm" % (RoC/2))
+    print("   Ronchi Frequency = %.3f lp/mm" % lp_per_mm)
+
+    plt.subplots(2,3,figsize=(13,8))
+
+    for i, z_offset in enumerate([-63,35,133,231,329,429]):
+        plt.subplot(2,3,i+1)
+        x,y = lenstest.ronchi.gram(D, RoC, lp_per_mm, z_offset, conic=conic)
+        plt.plot(x,y,'o', markersize=0.1, color='blue')
+        lenstest.lenstest.draw_circle(D/2)
+        plt.title("%.0fmm from focus"%z_offset)
+        plt.gca().set_aspect("equal")
+        if i in [1,2,4,5]:
+            plt.yticks([])
+        if i in [0,1,2]:
+            plt.xticks([])
+    plt.show()
+
+Produces
+
+.. image:: https://raw.githubusercontent.com/scottprahl/lenstest/master/docs/ronchi.png
+   :alt: Ronchigram
 
 License
 -------
