@@ -15,8 +15,8 @@ by Scott Prahl
    :target: https://github.com/conda-forge/lenstest-feedstock
    :alt: conda
 
-.. image:: https://zenodo.org/badge/107437651.svg
-   :target: https://zenodo.org/badge/latestdoi/107437651
+.. image:: https://zenodo.org/badge/357035523.svg
+   :target: https://zenodo.org/badge/latestdoi/357035523
    :alt: zenodo
 
 |
