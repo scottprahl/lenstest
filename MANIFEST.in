@@ -1,2 +1,5 @@
 include CHANGELOG.rst
 include CITATION.cff
+include tests/test_foucault.py
+include tests/test_lenstest.py
+include tests/test_ronchi.py
