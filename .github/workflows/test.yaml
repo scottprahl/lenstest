@@ -29,8 +29,11 @@ jobs:
       - name: Install package and dependencies
         run: |
           pip install -U pip setuptools wheel
-          pip install -r requirements-dev.txt
+          pip install -r requirements.txt
 
       - name: Test with pytest
         run: |
-          pytest
+          pytest tests/test_foucault.py
+          pytest tests/test_lenstest.py
+          pytest tests/test_ronchi.py
+
