@@ -1,12 +1,11 @@
 # pylint: disable=invalid-name
-# pylint: disable=no-self-use
 # pylint: disable=protected-access
 """Test functionality of utility routines found in ronchi.py."""
 
 import unittest
 import numpy as np
 import matplotlib.pyplot as plt
-from lenstest import ronchi
+import lenstest
 
 class TestGram(unittest.TestCase):
     """Evaluate gram functionality."""
@@ -17,7 +16,7 @@ class TestGram(unittest.TestCase):
         RoC = 200
         lpm = 10
         z_offset = 10
-        x, y = ronchi.gram(D, RoC, lpm, z_offset)
+        x, y = lenstest.ronchi.gram(D, RoC, lpm, z_offset)
         self.assertIsInstance(x, np.ndarray)
         self.assertIsInstance(y, np.ndarray)
 
@@ -27,7 +26,7 @@ class TestGram(unittest.TestCase):
         RoC = 200
         lpm = 10
         z_offset = 10
-        x, y = ronchi.gram(D, RoC, lpm, z_offset)
+        x, y = lenstest.ronchi.gram(D, RoC, lpm, z_offset)
         self.assertEqual(x.shape, (100000,))
         self.assertEqual(y.shape, (100000,))
 
@@ -37,7 +36,7 @@ class TestGram(unittest.TestCase):
         RoC = 200
         lpm = 10
         z_offset = 10
-        x, y = ronchi.gram(D, RoC, lpm, z_offset, invert=True)
+        x, y = lenstest.ronchi.gram(D, RoC, lpm, z_offset, invert=True)
         self.assertEqual(x.shape, (100000,))
         self.assertEqual(y.shape, (100000,))
 
@@ -52,7 +51,7 @@ class TestTransmitted(unittest.TestCase):
         z_offset = 10
         X = np.zeros((10, 10))
         Y = np.zeros((10, 10))
-        result = ronchi._transmitted(RoC, lpm, z_offset, X, Y)
+        result = lenstest.ronchi._transmitted(RoC, lpm, z_offset, X, Y)
         self.assertIsInstance(result, np.ndarray)
 
     def test_transmitted_output_shape(self):
@@ -62,7 +61,7 @@ class TestTransmitted(unittest.TestCase):
         z_offset = 10
         X = np.zeros((10, 10))
         Y = np.zeros((10, 10))
-        result = ronchi._transmitted(RoC, lpm, z_offset, X, Y)
+        result = lenstest.ronchi._transmitted(RoC, lpm, z_offset, X, Y)
         self.assertEqual(result.shape, (10, 10))
 
     def test_transmitted_mask_parameter(self):
@@ -72,7 +71,7 @@ class TestTransmitted(unittest.TestCase):
         z_offset = 10
         X = np.zeros((10, 10))
         Y = np.zeros((10, 10))
-        result = ronchi._transmitted(RoC, lpm, z_offset, X, Y, mask=True)
+        result = lenstest.ronchi._transmitted(RoC, lpm, z_offset, X, Y, mask=True)
         self.assertEqual(result.shape, (10, 10))
 
 
@@ -85,7 +84,7 @@ class TestPlotRulingAndScreen(unittest.TestCase):
         RoC = 200
         lpm = 10
         z_offset = 10
-        fig, ax = ronchi.plot_ruling_and_screen(D, RoC, lpm, z_offset)
+        fig, ax = lenstest.ronchi.plot_ruling_and_screen(D, RoC, lpm, z_offset)
         self.assertIsInstance(fig, plt.Figure)
         self.assertIsInstance(ax[0], plt.Axes)
         self.assertIsInstance(ax[1], plt.Axes)
@@ -96,7 +95,7 @@ class TestPlotRulingAndScreen(unittest.TestCase):
         RoC = 200
         lpm = 10
         z_offset = 10
-        result = ronchi.plot_ruling_and_screen(D, RoC, lpm, z_offset)
+        result = lenstest.ronchi.plot_ruling_and_screen(D, RoC, lpm, z_offset)
         self.assertEqual(len(result), 2)
 
     def test_plot_ruling_and_screen_grid_parameter(self):
@@ -105,7 +104,7 @@ class TestPlotRulingAndScreen(unittest.TestCase):
         RoC = 200
         lpm = 10
         z_offset = 10
-        ronchi.plot_ruling_and_screen(D, RoC, lpm, z_offset, on_grid=True)
+        lenstest.ronchi.plot_ruling_and_screen(D, RoC, lpm, z_offset, on_grid=True)
 
 
 class TestPlotLensLayout(unittest.TestCase):
@@ -116,7 +115,7 @@ class TestPlotLensLayout(unittest.TestCase):
         D = 100
         f = 200
         z_offset = 10
-        fig, ax = ronchi.plot_lens_layout(D, f, z_offset)
+        fig, ax = lenstest.ronchi.plot_lens_layout(D, f, z_offset)
         self.assertIsInstance(fig, plt.Figure)
         self.assertIsInstance(ax, plt.Axes)
 
@@ -125,7 +124,7 @@ class TestPlotLensLayout(unittest.TestCase):
         D = 100
         f = 200
         z_offset = 10
-        result = ronchi.plot_lens_layout(D, f, z_offset)
+        result = lenstest.ronchi.plot_lens_layout(D, f, z_offset)
         self.assertEqual(len(result), 2)
 
 
@@ -137,7 +136,7 @@ class TestPlotMirrorLayout(unittest.TestCase):
         D = 100
         RoC = 200
         z_offset = 10
-        fig, ax = ronchi.plot_lens_layout(D, RoC, z_offset)
+        fig, ax = lenstest.ronchi.plot_lens_layout(D, RoC, z_offset)
         self.assertIsInstance(fig, plt.Figure)
         self.assertIsInstance(ax, plt.Axes)
 
@@ -146,7 +145,7 @@ class TestPlotMirrorLayout(unittest.TestCase):
         D = 100
         RoC = 200
         z_offset = 10
-        result = ronchi.plot_lens_layout(D, RoC, z_offset)
+        result = lenstest.ronchi.plot_lens_layout(D, RoC, z_offset)
         self.assertEqual(len(result), 2)
 
 

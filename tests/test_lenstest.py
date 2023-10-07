@@ -1,11 +1,10 @@
 # pylint: disable=invalid-name
 # pylint: disable=unused-variable
-# pylint: disable=no-self-use
 """Test functionality of utility routines found in lenstest.py."""
 
 import unittest
 import numpy as np
-from lenstest import lenstest
+import lenstest.lenstest
 
 class TestLensTest(unittest.TestCase):
     """Evaluate all the functions."""
@@ -24,7 +23,7 @@ class TestLensTest(unittest.TestCase):
         ]
 
         for x in inputs:
-            result = lenstest.sagitta(*x)
+            lenstest.lenstest.sagitta(*x)
 
 
     def test_draw_circle(self):
@@ -36,7 +35,7 @@ class TestLensTest(unittest.TestCase):
         ]
 
         for x in inputs:
-            lenstest.draw_circle(*x)
+            lenstest.lenstest.draw_circle(*x)
 
 
     def test_XY_test_points(self):
@@ -48,7 +47,7 @@ class TestLensTest(unittest.TestCase):
         ]
 
         for x in inputs:
-            result = lenstest.XY_test_points(*x)
+            lenstest.lenstest.XY_test_points(*x)
 
 
     def test_knife_polygon(self):
@@ -60,7 +59,7 @@ class TestLensTest(unittest.TestCase):
         ]
 
         for x in inputs:
-            result = lenstest.knife_polygon(*x)
+            lenstest.lenstest.knife_polygon(*x)
 
 
     def test_circle_polygon(self):
@@ -72,7 +71,7 @@ class TestLensTest(unittest.TestCase):
         ]
 
         for x in inputs:
-            result = lenstest.circle_polygon(*x)
+            lenstest.lenstest.circle_polygon(*x)
 
     def test_sagitta_values(self):
         """
@@ -109,7 +108,7 @@ class TestLensTest(unittest.TestCase):
         x = np.zeros_like(y)
 
         for i, K in enumerate(conic_constant):
-            sag = lenstest.sagitta(RoC, K, x, y)
+            sag = lenstest.lenstest.sagitta(RoC, K, x, y)
             print(sag)
             table_sag = (results[:,i+1]).flatten()
             print(table_sag)

@@ -154,7 +154,7 @@ def plot_gram(D, RoC, x_offset, z_offset,
 
 
 def plot_knife_and_screen(D, RoC, x_offset, z_offset,
-                           conic=0, phi=0, init=True, A=0, on_grid=False, invert=False):
+                           conic=0, phi=0, init=True, A=0, on_grid=False):
     """
     Plot the Foucault knife edge image.
     
@@ -175,7 +175,6 @@ def plot_knife_and_screen(D, RoC, x_offset, z_offset,
         phi: CCW rotation of Ronchi ruling from vertical [radians]
         init: set to False to allow updating plots
         on_grid: if False generate points on a grid
-        invert: set to True to invert ruling
 
     Returns:
         fig: matplotlib Figure object representing the plot
@@ -190,7 +189,7 @@ def plot_knife_and_screen(D, RoC, x_offset, z_offset,
     # plot in the plane of the knife edge
     plt.subplot(1, 2, 1)
     plt.gca().set_aspect('equal')
-    
+
     # draw the knife
     x, y = lenstest.lenstest.knife_polygon(D / 2, phi, x_offset)
     plt.fill(x, y, color='silver', alpha=0.8)

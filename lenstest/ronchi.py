@@ -206,7 +206,6 @@ def plot_ruling_and_screen(D, RoC, lpm, z_offset,
         plt.plot(0, 0, 'w+', markersize=5)
 
     # limit plot to slightly larger than the beam size
-    r_line = 2/lpm                                 # mm
     size = r_spot * 1.2
     plt.ylim(-size, size)
     plt.xlim(-size, size)
