@@ -64,10 +64,37 @@ or use immediately by clicking the Google Colaboratory button below
 
 .. image:: https://colab.research.google.com/assets/colab-badge.svg
    :target: https://colab.research.google.com/github/scottprahl/lenstest/blob/master
-  :alt: Colab
+   :alt: Colab
 
-Examples
---------
+Foucault Example
+----------------
+
+..code-block:: python
+
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import lenstest
+
+    D = 200
+    RoC = 400
+    z_offset = 10
+    x_offset = -0.5
+    conic = 0
+    phi = np.radians(0)
+
+    foucault.plot_lens_layout(D, RoC, x_offset, z_offset)
+    plt.show()
+
+    foucault.plot_knife_and_screen(D, RoC, x_offset, z_offset, phi=phi)
+    plt.show()
+
+Produces
+
+.. image:: https://raw.githubusercontent.com/scottprahl/lenstest/master/docs/foucault.png
+   :alt: foucougram
+
+Ronchi Example
+--------------
 
 10 meter parabolic mirror comparison.
 
