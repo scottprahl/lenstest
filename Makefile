@@ -3,7 +3,7 @@ SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = docs
 BUILDDIR      = docs/_build
 
-lintcheck:
+lint:
 	-pylint lenstest/__init__.py
 	-pylint lenstest/lenstest.py
 	-pylint lenstest/ronchi.py
@@ -35,7 +35,6 @@ html:
 clean:
 	rm -rf .ipynb_checkpoints
 	rm -rf .pytest_cache
-	rm -rf .tox
 	rm -rf __pycache__
 	rm -rf dist
 	rm -rf lenstest.egg-info
@@ -57,6 +56,5 @@ rcheck:
 	make html
 	check-manifest
 	pyroma -d .
-#	tox
 
 .PHONY: clean check rcheck html
