@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [tool.ruff]
 line-length = 100
-ignore = ["F403"]
-exclude =['.git', '__pycache__', 'docs']
+ignore = ["F403", "F401"]
+exclude =['.git', '__pycache__', 'docs', 'aket6.py']
 
 [tool.check-manifest]
 ignore = [
