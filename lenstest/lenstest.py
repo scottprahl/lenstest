@@ -1,6 +1,3 @@
-# pylint: disable=invalid-name
-# pylint: disable=too-many-arguments
-
 """
 Utility routines for lens testing.
 
@@ -120,6 +117,7 @@ def knife_polygon(s, phi, ds):
         s: short side of the rectangle   [mm]
         phi: CCW rotation from vertical  [radians]
         ds: shift of knife edge          [mm]
+
     Returns:
         x, y: coordinates of knife polygon
     """
