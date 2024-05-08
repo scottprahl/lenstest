@@ -12,15 +12,6 @@ lint:
 	-pylint tests/test_ronchi.py
 	-pylint tests/test_foucault.py
 
-doccheck:
-	-pydocstyle lenstest/lenstest.py
-	-pydocstyle lenstest/__init__.py
-	-pydocstyle lenstest/ronchi.py
-	-pydocstyle lenstest/foucault.py
-	-pydocstyle tests/test_lenstest.py
-	-pydocstyle tests/test_ronchi.py
-	-pydocstyle tests/test_foucault.py
-
 rstcheck:
 	-rstcheck README.rst
 	-rstcheck CHANGELOG.rst
@@ -59,6 +50,7 @@ test:
 
 rcheck:
 	make clean
+	ruff check
 	make rstcheck
 	make yamlcheck
 	make lint
