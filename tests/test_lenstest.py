@@ -1,5 +1,3 @@
-# pylint: disable=invalid-name
-# pylint: disable=unused-variable
 """Test functionality of utility routines found in lenstest.py."""
 
 import unittest

@@ -1,4 +1,3 @@
-# pylint: disable=invalid-name
 """
 This file is intended to be the target of a pytest run.
 
@@ -48,7 +47,7 @@ ids = [str(n) for n in notebooks]
 
 @pytest.mark.parametrize("notebook", notebooks, ids=ids)
 def test_run_notebook(notebook):
-    """Read and execute notebook
+    """Read and execute notebook.
 
     The method here is directly from the nbconvert docs
 
