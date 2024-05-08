@@ -1,7 +1,3 @@
-# pylint: disable=invalid-name
-# pylint: disable=too-many-arguments
-# pylint: disable=consider-using-f-string
-# pylint: disable=too-many-locals
 """
 Generate ronchigrams for lens testing.
 
@@ -41,10 +37,12 @@ def _transmitted(RoC, lpm, z_offset, X, Y, conic=0, mask=False, phi=0):
         RoC: radius of curvature of mirror [mm]
         lpm: line pairs per mm [1/mm]
         z_offset: axial z_offset of grating from center of mirror's RoC [mm]
-        X, Y: grid of points to evaluate [mm]
+        X: grid of points to evaluate [mm]
+        Y: grid of points to evaluate [mm]
         conic: conic constant or Schwartzchild constant [-]
         mask: show Ronchi ruling without lens/mirror effects
         phi: CCW rotation of Ronchi ruling from horizontal [radians]
+
     Returns:
         1D boolean array describing points blocked by Ronchi ruling
     """
@@ -127,6 +125,7 @@ def plot_gram(D, RoC, lpm, z_offset, conic=0, phi=0, on_grid=False, invert=False
         D: diameter of mirror [mm]
         RoC: radius of curvature of mirror [mm]
         lpm: line pairs per mm [1/mm]
+        z_offset: axial z_offset of grating from true focus [mm]
         conic: conic or Schwartzchild constant [-]
         phi: CCW rotation of Ronchi ruling from vertical [radians]
         on_grid: if False generate points on a grid
@@ -250,6 +249,7 @@ def plot_lens_layout(D, f, z_offset):
         D: diameter of mirror or lens [mm]
         f: focal length of lens [mm]
         z_offset: axial offset of knife edge from true focus [mm]
+
     Returns:
         fig: matplotlib Figure object representing the plot
         ax: matplotlib Axes object representing the plot
@@ -304,6 +304,7 @@ def plot_mirror_layout(D, RoC, z_offset):
         D: diameter of mirror or lens [mm]
         RoC: radius of curvature of mirror [mm]
         z_offset: axial offset of knife edge from true focus [mm]
+
     Returns:
         fig: matplotlib Figure object representing the plot
         ax: matplotlib Axes object representing the plot

@@ -1,8 +1,3 @@
-# pylint: disable=invalid-name
-# pylint: disable=too-many-arguments
-# pylint: disable=consider-using-f-string
-# pylint: disable=too-many-locals
-
 """
 Generate Foucault Knife Edge images (Foucaugrams) for mirror/lens testing.
 
@@ -31,11 +26,13 @@ def _transmitted(RoC, x_offset, z_offset, X, Y, conic=0, phi=0, mask=False, A=0)
         RoC: radius of curvature of mirror [mm]
         x_offset: transverse knife edge displacement from optical axis [mm]
         z_offset: axial knife edge offset from paraxial focus [mm]
-        X, Y: grid of points to evaluate [mm]
+        X: grid of points to evaluate [mm]
+        Y: grid of points to evaluate [mm]
         conic: conic constant or Schwartzchild constant [-]
         phi: CCW rotation of knife edge from vertical [radians]
         mask: show knife edge without lens/mirror effects
         A: coefficient of spherical aberration
+
     Returns:
         1D boolean array describing points blocked by knife edge
     """
@@ -126,6 +123,7 @@ def plot_gram(D, RoC, x_offset, z_offset,
         z_offset: axial knife edge offset from paraxial focus [mm]
         conic: conic or Schwartzchild constant [-]
         phi: CCW rotation of Ronchi ruling from vertical [radians]
+        A: spherical aberration [1/mm³]
         init: set to False to allow updating plots
         on_grid: if False generate points on a grid
         invert: set to True to invert ruling
@@ -174,13 +172,13 @@ def plot_knife_and_screen(D, RoC, x_offset, z_offset,
         conic: conic or Schwartzchild constant [-]
         phi: CCW rotation of Ronchi ruling from vertical [radians]
         init: set to False to allow updating plots
+        A: spherical aberration [1/mm³]
         on_grid: if False generate points on a grid
 
     Returns:
         fig: matplotlib Figure object representing the plot
         ax: matplotlib Axes object representing the plot
     """
-
     if init:
         fig, ax = plt.subplots(1, 2, figsize=(10, 4))
     else:
@@ -263,6 +261,7 @@ def plot_lens_layout(D, RoC, x_offset, z_offset):
         RoC: radius of curvature of mirror [mm]
         x_offset: transverse knife edge offset from optical axis [mm]
         z_offset: axial knife edge offset from paraxial focus [mm]
+
     Returns:
         fig: matplotlib Figure object representing the plot
         ax: matplotlib Axes object representing the plot
@@ -335,6 +334,7 @@ def plot_mirror_layout(D, RoC, x_offset, z_offset):
         RoC: radius of curvature of mirror [mm]
         x_offset: transverse offset of knife edge from optical axis [mm]
         z_offset: axial knife edge offset from paraxial focus [mm]
+
     Returns:
         fig: matplotlib Figure object representing the plot
         ax: matplotlib Axes object representing the plot
