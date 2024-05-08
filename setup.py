@@ -1,3 +1,4 @@
+"""Setup instructions for lenstest module."""
 import re
 import os.path
 from setuptools import setup
