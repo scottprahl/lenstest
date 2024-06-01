@@ -1,41 +1,43 @@
+.. |pypi| image:: https://img.shields.io/pypi/v/lenstest?color=68CA66
+   :target: https://pypi.org/project/lenstest/
+   :alt: pypi
+
+.. |github| image:: https://img.shields.io/github/v/tag/scottprahl/lenstest?label=github&color=v
+   :target: https://github.com/scottprahl/lenstest
+   :alt: github
+
+.. |conda| image:: https://img.shields.io/conda/vn/conda-forge/lenstest?label=conda&color=68CA66
+   :target: https://github.com/conda-forge/lenstest-feedstock
+   :alt: conda
+
+.. |zenodo| image:: https://zenodo.org/badge/357035523.svg
+   :target: https://zenodo.org/badge/latestdoi/357035523
+   :alt: zenodo
+
+.. |license| image:: https://img.shields.io/github/license/scottprahl/lenstest?color=68CA66
+   :target: https://github.com/scottprahl/lenstest/blob/main/LICENSE.txt
+   :alt: License
+
+.. |test| image:: https://github.com/scottprahl/lenstest/actions/workflows/test.yaml/badge.svg
+   :target: https://github.com/scottprahl/lenstest/actions/workflows/test.yaml
+   :alt: testing
+
+.. |docs| image:: https://readthedocs.org/projects/lenstest/badge?color=68CA66
+  :target: https://lenstest.readthedocs.io
+  :alt: docs
+
+.. |downloads| image:: https://img.shields.io/pypi/dm/lenstest?color=68CA66
+   :target: https://pypi.org/project/lenstest/
+   :alt: Downloads
+
 lenstest
 ========
 
 by Scott Prahl
 
-.. image:: https://img.shields.io/pypi/v/lenstest?color=68CA66
-   :target: https://pypi.org/project/lenstest/
-   :alt: pypi
+|pypi| |github| |conda| |zenodo|
 
-.. image:: https://img.shields.io/github/v/tag/scottprahl/lenstest?label=github&color=v
-   :target: https://github.com/scottprahl/lenstest
-   :alt: github
-
-.. image:: https://img.shields.io/conda/vn/conda-forge/lenstest?label=conda&color=68CA66
-   :target: https://github.com/conda-forge/lenstest-feedstock
-   :alt: conda
-
-.. image:: https://zenodo.org/badge/357035523.svg
-   :target: https://zenodo.org/badge/latestdoi/357035523
-   :alt: zenodo
-
-|
-
-.. image:: https://img.shields.io/github/license/scottprahl/lenstest?color=68CA66
-   :target: https://github.com/scottprahl/lenstest/blob/main/LICENSE.txt
-   :alt: License
-
-.. image:: https://github.com/scottprahl/lenstest/actions/workflows/test.yaml/badge.svg
-   :target: https://github.com/scottprahl/lenstest/actions/workflows/test.yaml
-   :alt: testing
-
-.. image:: https://readthedocs.org/projects/lenstest/badge?color=68CA66
-  :target: https://lenstest.readthedocs.io
-  :alt: docs
-
-.. image:: https://img.shields.io/pypi/dm/lenstest?color=68CA66
-   :target: https://pypi.org/project/lenstest/
-   :alt: Downloads
+|license| |test| |docs| |downloads|
 
 __________
 
