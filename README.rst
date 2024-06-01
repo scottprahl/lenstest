@@ -22,7 +22,7 @@ by Scott Prahl
 |
 
 .. image:: https://img.shields.io/github/license/scottprahl/lenstest?color=68CA66
-   :target: https://github.com/scottprahl/lenstest/blob/master/LICENSE.txt
+   :target: https://github.com/scottprahl/lenstest/blob/main/LICENSE.txt
    :alt: License
 
 .. image:: https://github.com/scottprahl/lenstest/actions/workflows/test.yaml/badge.svg
@@ -63,7 +63,7 @@ Installation
 or use immediately by clicking the Google Colaboratory button below
 
 .. image:: https://colab.research.google.com/assets/colab-badge.svg
-   :target: https://colab.research.google.com/github/scottprahl/lenstest/blob/master
+   :target: https://colab.research.google.com/github/scottprahl/lenstest/blob/main
    :alt: Colab
 
 Foucault Example
@@ -90,7 +90,7 @@ Foucault Example
 
 Produces
 
-.. image:: https://raw.githubusercontent.com/scottprahl/lenstest/master/docs/foucault.png
+.. image:: https://raw.githubusercontent.com/scottprahl/lenstest/main/docs/foucault.png
    :alt: foucougram
 
 Ronchi Example
@@ -134,7 +134,7 @@ Ronchi Example
 
 Produces
 
-.. image:: https://raw.githubusercontent.com/scottprahl/lenstest/master/docs/ronchi.png
+.. image:: https://raw.githubusercontent.com/scottprahl/lenstest/main/docs/ronchi.png
    :alt: Ronchigram
 
 License
