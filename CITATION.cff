@@ -1,54 +1,50 @@
 cff-version: 1.2.0
 type: software
 message: If you use this software, please cite it as below.
-
-title: "lenstest: A Python module for non-interferometric testing of mirrors and lenses"
-version: 0.9.0
+title: 'lenstest: A Python module for non-interferometric testing of mirrors and lenses'
+version: 1.0.0
 doi: 10.5281/zenodo.8417591
-date-released: "2023-10-07"
-
+date-released: '2023-10-07'
 url: https://doi.org/10.5281/zenodo.8417591
 repository-code: https://github.com/scottprahl/lenstest
 license: MIT
-
 authors:
-  - family-names: Prahl
-    given-names: Scott
-    orcid: https://orcid.org/0000-0003-1468-6851
-    email: scott.prahl@oit.edu
+- family-names: Prahl
+  given-names: Scott
+  orcid: https://orcid.org/0000-0003-1468-6851
+  email: scott.prahl@oit.edu
+abstract: 'lenstest is a Python package for analyzing optical components using non-interferometric
+  testing methods such as Ronchi and Foucault knife-edge measurements. It supports
+  simulation and interpretation of Ronchigrams, Foucaultgrams, and related fringe
+  patterns for identifying surface deviations in spherical, paraboloidal, and hyperboloidal
+  mirrors and lenses. The package is intended for research, education, and hands-on
+  optical fabrication measurements.
 
-abstract: >
-  lenstest is a Python package for analyzing optical components using
-  non-interferometric testing methods such as Ronchi and Foucault knife-edge measurements.
-  It supports simulation and interpretation of Ronchigrams, Foucaultgrams, and related
-  fringe patterns for identifying surface deviations in spherical, paraboloidal, and
-  hyperboloidal mirrors and lenses. The package is intended for research, education,
-  and hands-on optical fabrication measurements.
-
+  '
 keywords:
-  - Ronchi
-  - Foucault
-  - Knife Edge
-  - Ronchigram
-  - Foucaugram
-  - fringe
-  - lens
-  - mirror
-  - parabolic
-  - hyperbolic
-  - paraboloid
-  - hyperboloid
-  - oblate spheroid
-  - prolate spheroid
-
+- Ronchi
+- Foucault
+- Knife Edge
+- Ronchigram
+- Foucaugram
+- fringe
+- lens
+- mirror
+- parabolic
+- hyperbolic
+- paraboloid
+- hyperboloid
+- oblate spheroid
+- prolate spheroid
 preferred-citation:
   type: software
-  title: "lenstest: A Python module for non-interferometric testing of mirrors and lenses"
+  title: 'lenstest: A Python module for non-interferometric testing of mirrors and
+    lenses'
   year: 2023
-  version: 0.9.0
+  version: 1.0.0
   doi: 10.5281/zenodo.8417591
   url: https://doi.org/10.5281/zenodo.8417591
   authors:
-    - family-names: Prahl
-      given-names: Scott
-      orcid: https://orcid.org/0000-0003-1468-6851
+  - family-names: Prahl
+    given-names: Scott
+    orcid: https://orcid.org/0000-0003-1468-6851
