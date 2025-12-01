@@ -79,7 +79,7 @@ Foucault Example
 
     import numpy as np
     import matplotlib.pyplot as plt
-    import lenstest
+    from lenstest import foucault
 
     D = 200
     RoC = 400
@@ -111,7 +111,8 @@ Ronchi Example
 
     import numpy as np
     import matplotlib.pyplot as plt
-    import lenstest
+    from lenstest import ronchi
+    from lenstest.lenstest import draw_circle
 
     D = 10000  # 10 meter mirror
     F = 5
@@ -130,9 +131,9 @@ Ronchi Example
 
     for i, z_offset in enumerate([-63,35,133,231,329,429]):
         plt.subplot(2,3,i+1)
-        x,y = lenstest.ronchi.gram(D, RoC, lp_per_mm, z_offset, conic=conic)
+        x,y = ronchi.gram(D, RoC, lp_per_mm, z_offset, conic=conic)
         plt.plot(x,y,'o', markersize=0.1, color='blue')
-        lenstest.lenstest.draw_circle(D/2)
+        lenstest.draw_circle(D/2)
         plt.title("%.0fmm from focus"%z_offset)
         plt.gca().set_aspect("equal")
         if i in [1,2,4,5]:
@@ -142,6 +143,14 @@ Ronchi Example
     plt.show()
 
 Produces
+
+.. code-block: text
+
+        Mirror Diameter = 10000 mm
+                     F# = 5.0
+    Radius of Curvature = 100000 mm
+           Focal Length = 50000 mm
+       Ronchi Frequency = 0.133 lp/mm
 
 .. image:: https://raw.githubusercontent.com/scottprahl/lenstest/main/docs/ronchi.png
    :alt: Ronchigram
