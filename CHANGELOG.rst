@@ -4,9 +4,19 @@ Changelog
 1.0.0
 -----
   * Jupyterlite support
-  * improve citations
+  * improve citation
   * add make lab target
   * add make readme target for images
+  * simplify ronchi-dynamic and foucault-dynamic
+  * fix README so code is correct
+  * bump minimum python to 3.9 
+  * fix zenodo links in README
+  * use venv for packaging and testing
+  * remove setup.py and setup.sh
+  * no longer package test files
+  * clean up MANIFEST.IN
+  * improve pyproject.toml
+  * requirements-dev.txt is now complete
 
 0.9.0
 -----

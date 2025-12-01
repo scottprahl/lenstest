@@ -1,31 +1,37 @@
-3) add testing badge to readme
-3) reorganize documentation
-4) full docstrings for functions
-5) add aberrations
+todo
+1) reorganize documentation
+2) full docstrings for functions
+3) add aberrations
+
+# consider regenerating images using docs/images/readme_images.ipynb
+  make readme
+  git commit docs/images/*png -m 'updates to readme images'
 
 # sanity check
   make rcheck
-  python -m build
 
-# edit version in setup.cfg
-  git commit -m 'update version' setup.cfg conf.py
+# edit version in __version__.py
+  git commit -m 'update version' __version__.py
 
-# update CHANGELOG.txt  `git shortlog v0.5.0..HEAD`
+# update CHANGELOG.txt  `git shortlog 1.0.0..HEAD`
   git commit -m 'update recent changes' CHANGELOG.txt
   git push
 
+# update jupyterlite pages on github
+  make lite-clean
+  make lite
+  make lite-deploy
+
 # create release tag on github
-  git tag v0.5.1
-  git push origin v0.5.1
+  git tag 1.0.0
+  git push origin 1.0.0
 
 # publish release
   open https://github.com/scottprahl/lenstest
 
-# check docs
+# check release
   open https://lenstest.readthedocs.io
+  open https://pypi.org/project/lenstest/
+  open https://pypi.org/project/lenstest/
 
-# check pypi release
-  open https://pypi.org/project/lenstest/
-  
-# check zenodo release
-  open https://pypi.org/project/lenstest/
+# wait for conda release
