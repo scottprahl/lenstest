@@ -1,34 +1,104 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "lenstest"
+description = "Routines for analysis of non-interfometric wavefront testing."
+readme = "README.rst"
+requires-python = ">=3.9"
+keywords = [
+    "Ronchi",
+    "Foucault",
+    "Knife Edge",
+    "Ronchigram",
+    "Foucaugram",
+    "fringe",
+    "lens",
+    "mirror",
+    "parabolic",
+    "hyperbolic",
+    "paraboloid",
+    "hyperboloid",
+    "oblate spheroid",
+    "prolate spheroid",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "numpy",
+    "matplotlib",
+]
+authors = [{name = "Scott Prahl", email = "scott.prahl@oit.edu"}]
+license = "MIT"
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/scottprahl/lenstest"
+Documentation = "https://lenstest.readthedocs.io"
+Source = "https://github.com/scottprahl/lenstest"
+Tracker = "https://github.com/scottprahl/lenstest/issues"
+Changelog = "https://github.com/scottprahl/lenstest/blob/main/docs/CHANGELOG.rst"
+
+
+[tool.setuptools.dynamic]
+version = {attr = "lenstest.__version__"}
+
+[tool.setuptools]
+include-package-data = true
+packages = { find = { where = ["."], include = ["lenstest*"] } }
 
 [tool.ruff]
 line-length = 110
-exclude =['.git', '__pycache__', 'docs', 'aket6.py']
 
 [tool.ruff.lint]
 select = ["D", "E", "F", "W"]
-ignore = ["D212", "F403"]
+ignore = ["D212", "E402", "F403"]
 pydocstyle.convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["D100", "D103"]   # ignore missing docstring in test files
+"jupyter_lite_config.py" = ["F821"]  # ignore undefined "c"
 
 [tool.check-manifest]
 ignore = [
-    ".readthedocs.yaml",
-    "docs/*",
-    "Makefile",
-    "release.txt",
-    "requirements.txt",
-    "todo",
+  ".gh-pages/**",
+  ".lite_src/**",
+  ".readthedocs.yaml",
+  ".yamllint",
+  "_site/**",
+  "docs/**",
+  "jupyter_lite_config.json",
+  "Makefile",
+  "release.txt",
+  "requirements-dev.txt",
 ]
 
 [tool.pytest.ini_options]
 markers = ["notebooks"]
 
-[tool.pylint]
+[tool.pylint.messages_control]
 disable = [
     "invalid-name",
     "line-too-long",
     "too-many-locals",
     "too-many-arguments",
+    "too-many-positional-arguments",
     "consider-using-f-string",
-  ]
+    "too-many-statements",
+    "duplicate-code",
+    "C0114",
+    "C0116",
+]
+
+[tool.black]
+line-length = 110
