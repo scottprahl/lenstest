@@ -28,9 +28,10 @@ jobs:
 
       - name: Install package and dependencies
         run: |
+          pip install -e .  # current package in editable mode
           pip install numpy
           pip install matplotlib
-          pip install -e .  # current package in editable mode
+          pip install pytest
 
       - name: Test with pytest
         run: |
