@@ -174,7 +174,7 @@ rcheck:
 .PHONY: readme
 readme: $(VENV)/.ready
 	@echo "Creating readme images..."
-	@cd docs/images && ../../$(PYTHON) run_notebook.py readme_images.ipynb
+	@cd docs && ../$(PYTHON) make_readme_images.py
 
 .PHONY: lite
 lite: $(VENV)/.ready
