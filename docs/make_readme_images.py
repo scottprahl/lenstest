@@ -11,9 +11,12 @@ def make_foucault_images():
     x_offset = -0.5
 
     lenstest.foucault.plot_lens_layout(D, RoC, x_offset, z_offset)
-    plt.savefig("foucault.png", dpi=300)
+    plt.savefig("foucault_layout.png", dpi=300)
     # plt.show()
 
+    lenstest.foucault.plot_knife_and_screen(D, RoC, x_offset, z_offset)
+    plt.savefig("foucault_diagram.png", dpi=300)
+    # plt.show()
 
 def make_ronchi_images():
     """Create Ronchi image for README.rst."""

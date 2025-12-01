@@ -88,10 +88,16 @@ Foucault Example
     lenstest.foucault.plot_lens_layout(D, RoC, x_offset, z_offset)
     plt.show()
 
+    lenstest.foucault.plot_knife_and_screen(D, RoC, x_offset, z_offset)
+    plt.show()
+
 Produces
 
-.. image:: https://raw.githubusercontent.com/scottprahl/lenstest/main/docs/foucault.png
-   :alt: layout
+.. image:: https://raw.githubusercontent.com/scottprahl/lenstest/main/docs/foucault_layout.png
+   :alt: Foucault layout
+
+.. image:: https://raw.githubusercontent.com/scottprahl/lenstest/main/docs/foucault_diagram.png
+   :alt: Foucault diagram
 
 Ronchi Example
 --------------
