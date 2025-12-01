@@ -8,11 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import lenstest
 
-__all__ = ('gram',
-           'plot_gram',
-           'plot_ruling_and_screen',
-           'plot_lens_layout',
-           'plot_mirror_layout')
+__all__ = ("gram", "plot_gram", "plot_ruling_and_screen", "plot_lens_layout", "plot_mirror_layout")
 
 
 def _transmitted(RoC, lpm, z_offset, X, Y, conic=0, mask=False, phi=0):
@@ -66,8 +62,7 @@ def _transmitted(RoC, lpm, z_offset, X, Y, conic=0, mask=False, phi=0):
     return T_mask
 
 
-def gram(D, RoC, lpm, z_offset, conic=0, phi=0,
-         N=100000, invert=False, on_grid=False, mask=False):
+def gram(D, RoC, lpm, z_offset, conic=0, phi=0, N=100000, invert=False, on_grid=False, mask=False):
     """
     Create points that pass through a Ronchi ruling.
 
@@ -136,23 +131,22 @@ def plot_gram(D, RoC, lpm, z_offset, conic=0, phi=0, on_grid=False, invert=False
     """
     # generate and plot all the points
     x, y = gram(D, RoC, lpm, z_offset, conic=conic, phi=phi, invert=invert, on_grid=on_grid)
-    plt.plot(x, y, 'o', markersize=0.1, color='white')
+    plt.plot(x, y, "o", markersize=0.1, color="white")
 
     # Draw circle showing spotsize on projection screen
-    lenstest.lenstest.draw_circle(D / 2, color='green')
+    lenstest.lenstest.draw_circle(D / 2, color="green")
 
     # limit plot to slightly larger than the beam size
     size = D / 2 * 1.2
     plt.ylim(-size, size)
     plt.xlim(-size, size)
     plt.gca().set_facecolor("black")
-    plt.gca().set_aspect('equal')
+    plt.gca().set_aspect("equal")
     plt.xlabel("(mm)")
     plt.ylabel("(mm)")
 
 
-def plot_ruling_and_screen(D, RoC, lpm, z_offset,
-                           conic=0, phi=0, init=True, on_grid=False, invert=False):
+def plot_ruling_and_screen(D, RoC, lpm, z_offset, conic=0, phi=0, init=True, on_grid=False, invert=False):
     """
     Plot cross-sections at Ronchi ruling and projection screen.
 
@@ -187,32 +181,31 @@ def plot_ruling_and_screen(D, RoC, lpm, z_offset,
     # create plot in plane of Ronchi Ruling with beam size
     plt.subplot(1, 2, 1)
     plt.gca().set_facecolor("black")
-    plt.gca().set_aspect('equal')
+    plt.gca().set_aspect("equal")
 
     # generate and plot all the points
-    x, y = gram(D, RoC, lpm, z_offset, conic=conic,
-                phi=phi, on_grid=on_grid, mask=True, invert=invert)
-    plt.plot(x, y, 'o', markersize=0.6, color='white')
+    x, y = gram(D, RoC, lpm, z_offset, conic=conic, phi=phi, on_grid=on_grid, mask=True, invert=invert)
+    plt.plot(x, y, "o", markersize=0.6, color="white")
 
     # Draw circle showing spotsize at location of ruling
-    r_geometric = abs(D / 2 / RoC * z_offset)        # mm
-    r_diffraction = 0.5 * 1e-6 * (RoC / 2) / D       # mm
+    r_geometric = abs(D / 2 / RoC * z_offset)  # mm
+    r_diffraction = 0.5 * 1e-6 * (RoC / 2) / D  # mm
     r_spot = max(r_geometric, r_diffraction)
-    lenstest.lenstest.draw_circle(r_spot, color='blue')
+    lenstest.lenstest.draw_circle(r_spot, color="blue")
     if invert:
-        plt.plot(0, 0, 'k+', markersize=5)
+        plt.plot(0, 0, "k+", markersize=5)
     else:
-        plt.plot(0, 0, 'w+', markersize=5)
+        plt.plot(0, 0, "w+", markersize=5)
 
     # limit plot to slightly larger than the beam size
     size = r_spot * 1.2
     plt.ylim(-size, size)
     plt.xlim(-size, size)
-    ks = 'at'
+    ks = "at"
     if z_offset < 0:
-        ks = '%.3fmm before' % abs(z_offset)
+        ks = "%.3fmm before" % abs(z_offset)
     if z_offset > 0:
-        ks = '%.3fmm after' % z_offset
+        ks = "%.3fmm after" % z_offset
     plt.title("%s focus" % ks)
     plt.xlabel("Ruling Plane x (mm)")
     plt.ylabel("Ruling Plane y (mm)")
@@ -220,21 +213,20 @@ def plot_ruling_and_screen(D, RoC, lpm, z_offset,
     # create plot in plane of the projection screen
     plt.subplot(1, 2, 2)
     plt.gca().set_facecolor("black")
-    plt.gca().set_aspect('equal')
+    plt.gca().set_aspect("equal")
 
     # generate and plot all the points
-    x, y = gram(D, RoC, lpm, z_offset,
-                conic=conic, phi=phi, on_grid=on_grid, mask=False, invert=invert)
-    plt.plot(x, y, 'o', markersize=0.1, color='white')
+    x, y = gram(D, RoC, lpm, z_offset, conic=conic, phi=phi, on_grid=on_grid, mask=False, invert=invert)
+    plt.plot(x, y, "o", markersize=0.1, color="white")
 
     # Draw circle showing spotsize on projection screen
-    lenstest.lenstest.draw_circle(D / 2, color='green')
+    lenstest.lenstest.draw_circle(D / 2, color="green")
 
     # limit plot to slightly larger than the beam size
     size = D / 2 * 1.2
     plt.ylim(-size, size)
     plt.xlim(-size, size)
-    plt.title('%.0fmm from Focus)' % RoC)
+    plt.title("%.0fmm from Focus)" % RoC)
     plt.xlabel("Screen x (mm)")
     plt.ylabel("Screen y (mm)")
 
@@ -256,43 +248,43 @@ def plot_lens_layout(D, f, z_offset):
     """
     fig, ax = plt.subplots(figsize=(10, 5))
 
-    RoC = f          # for lens assuming n=1.5 and biconvex lens
+    RoC = f  # for lens assuming n=1.5 and biconvex lens
 
     # point source
-    plt.text(-4 * f, D * 0.05, 'point source', ha='left', rotation=90, color='blue')
+    plt.text(-4 * f, D * 0.05, "point source", ha="left", rotation=90, color="blue")
 
     # marginal rays with lens at -2f
     DD = 0.8 * D
-    plt.plot([-4 * f, -2 * f, 2 * f], [0, DD / 2, -DD / 2], color='black', linewidth=1)
-    plt.plot([-4 * f, -2 * f, 2 * f], [0, -DD / 2, DD / 2], color='black', linewidth=1)
-    plt.plot([-4 * f, -2 * f, 2 * f], [0, DD / 4, -DD / 4], color='black', linewidth=1)
-    plt.plot([-4 * f, -2 * f, 2 * f], [0, -DD / 4, DD / 4], color='black', linewidth=1)
+    plt.plot([-4 * f, -2 * f, 2 * f], [0, DD / 2, -DD / 2], color="black", linewidth=1)
+    plt.plot([-4 * f, -2 * f, 2 * f], [0, -DD / 2, DD / 2], color="black", linewidth=1)
+    plt.plot([-4 * f, -2 * f, 2 * f], [0, DD / 4, -DD / 4], color="black", linewidth=1)
+    plt.plot([-4 * f, -2 * f, 2 * f], [0, -DD / 4, DD / 4], color="black", linewidth=1)
 
     # draw the lens
     lenstest.lenstest.draw_lens(D, RoC, -2 * f)
-    plt.text(-2 * f, D / 2, 'lens under test', ha='left', color='blue')
+    plt.text(-2 * f, D / 2, "lens under test", ha="left", color="blue")
 
-# focus plane
-#    plt.text(0, D / 2, ' focus', ha='left')
-#    plt.axvline(0, color='black', linewidth=1)
+    # focus plane
+    #    plt.text(0, D / 2, ' focus', ha='left')
+    #    plt.axvline(0, color='black', linewidth=1)
 
     # optical axis
-    plt.axhline(0, color='blue', linewidth=1)
-#    plt.text(-RoC * 0.9, 0, 'optical axis ', ha='left', va='center', color='blue',
-#             bbox={"facecolor": "white", "edgecolor":"white"})
+    plt.axhline(0, color="blue", linewidth=1)
+    #    plt.text(-RoC * 0.9, 0, 'optical axis ', ha='left', va='center', color='blue',
+    #             bbox={"facecolor": "white", "edgecolor":"white"})
 
     # Ronchi
-#    plt.axvline(z_offset, color='black', linewidth = 0.5)
-    plt.plot([z_offset, z_offset], [D / 2, -D / 2], ls='--', lw=2, color='black')
-    plt.text(z_offset, D / 2, ' Ronchi Ruling', ha='left', color='black')
+    #    plt.axvline(z_offset, color='black', linewidth = 0.5)
+    plt.plot([z_offset, z_offset], [D / 2, -D / 2], ls="--", lw=2, color="black")
+    plt.text(z_offset, D / 2, " Ronchi Ruling", ha="left", color="black")
 
     # screen
-    plt.axvline(2 * f, color='blue', linewidth=2)
-    plt.text(2 * f * 1.02, -D / 2, 'projection screen', ha='left', rotation=90, color='blue')
+    plt.axvline(2 * f, color="blue", linewidth=2)
+    plt.text(2 * f * 1.02, -D / 2, "projection screen", ha="left", rotation=90, color="blue")
 
-    plt.xlabel('Distance from focus (mm)')
-    plt.ylabel('Height above optical axis (mm)')
-    plt.title('Ronchi Ruling Lens Test')
+    plt.xlabel("Distance from focus (mm)")
+    plt.ylabel("Height above optical axis (mm)")
+    plt.title("Ronchi Ruling Lens Test")
     return fig, ax
 
 
@@ -315,40 +307,40 @@ def plot_mirror_layout(D, RoC, z_offset):
     yo = D / 8
 
     # point source
-    plt.text(0, yo, ' point source', ha='left', va='center', color='blue')
+    plt.text(0, yo, " point source", ha="left", va="center", color="blue")
 
     # marginal rays with mirror at -RoC
     DD = 0.8 * D
     y_screen = -yo - (DD / 2 + yo) / RoC * D
-    plt.plot([0, -RoC, 0, D], [yo, DD / 2, -yo, y_screen], color='blue', linewidth=1)
-#    plt.plot([0, -RoC, 0], [yo, DD / 4, -yo], color='black', linewidth=1)
-#    plt.plot([0, -RoC, 0], [yo, -DD / 4, -yo], color='black', linewidth=1)
+    plt.plot([0, -RoC, 0, D], [yo, DD / 2, -yo, y_screen], color="blue", linewidth=1)
+    #    plt.plot([0, -RoC, 0], [yo, DD / 4, -yo], color='black', linewidth=1)
+    #    plt.plot([0, -RoC, 0], [yo, -DD / 4, -yo], color='black', linewidth=1)
     y_screen = -yo - (DD / 2 - yo) / RoC * D
-    plt.plot([0, -RoC, 0, D], [yo, -DD / 2, -yo, -y_screen - 2 * yo], color='black', linewidth=1)
+    plt.plot([0, -RoC, 0, D], [yo, -DD / 2, -yo, -y_screen - 2 * yo], color="black", linewidth=1)
 
     # draw the mirror
     lenstest.lenstest.draw_mirror(D, RoC, -RoC)
-    plt.text(-RoC, D / 2, 'mirror under test', ha='left', color='blue')
+    plt.text(-RoC, D / 2, "mirror under test", ha="left", color="blue")
 
-# focus plane
-#    plt.text(0, D / 2, ' focus', ha='left')
-#    plt.axvline(0, color='black', linewidth = 1)
+    # focus plane
+    #    plt.text(0, D / 2, ' focus', ha='left')
+    #    plt.axvline(0, color='black', linewidth = 1)
 
     # optical axis
-    plt.axhline(0, color='blue', linewidth=1)
-#    plt.text(-RoC * 0.9, 0, 'optical axis ', ha='left', va='center', color='blue',
-#             bbox={"facecolor": "white", "edgecolor":"white"})
+    plt.axhline(0, color="blue", linewidth=1)
+    #    plt.text(-RoC * 0.9, 0, 'optical axis ', ha='left', va='center', color='blue',
+    #             bbox={"facecolor": "white", "edgecolor":"white"})
 
     # Ronchi
-#    plt.axvline(z_offset, color='black', linewidth = 0.5)
-    plt.plot([z_offset, z_offset], [0, -D / 2], ls='--', lw=2, color='black')
-    plt.text(z_offset, -D / 2, ' Ronchi Ruling', ha='right', color='black')
+    #    plt.axvline(z_offset, color='black', linewidth = 0.5)
+    plt.plot([z_offset, z_offset], [0, -D / 2], ls="--", lw=2, color="black")
+    plt.text(z_offset, -D / 2, " Ronchi Ruling", ha="right", color="black")
 
     # screen
-    plt.axvline(D, color='blue', linewidth=2)
-    plt.text(D * 1.02, -D / 2, 'projection screen', ha='left', rotation=90, color='blue')
+    plt.axvline(D, color="blue", linewidth=2)
+    plt.text(D * 1.02, -D / 2, "projection screen", ha="left", rotation=90, color="blue")
 
-    plt.xlabel('Distance from focus (mm)')
-    plt.ylabel('Height above optical axis (mm)')
-    plt.title('Ronchi Ruling Lens Test')
+    plt.xlabel("Distance from focus (mm)")
+    plt.ylabel("Height above optical axis (mm)")
+    plt.title("Ronchi Ruling Lens Test")
     return fig, ax

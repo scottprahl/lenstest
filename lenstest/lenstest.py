@@ -7,15 +7,16 @@ Documentation and examples are available at <https://lenstest.readthedocs.io>
 import numpy as np
 import matplotlib.pyplot as plt
 
-__all__ = ('sagitta',
-           'XY_test_points',
-           'knife_polygon',
-           'circle_polygon',
-           'draw_circle',
-           'draw_lens',
-           'draw_mirror',
-           'conic_string',
-           )
+__all__ = (
+    "sagitta",
+    "XY_test_points",
+    "knife_polygon",
+    "circle_polygon",
+    "draw_circle",
+    "draw_lens",
+    "draw_mirror",
+    "conic_string",
+)
 
 
 def sagitta(RoC, conic, X, Y, A=0, D=0):
@@ -55,7 +56,7 @@ def sagitta(RoC, conic, X, Y, A=0, D=0):
     return heights
 
 
-def draw_circle(R, X0=0, Y0=0, color='black'):
+def draw_circle(R, X0=0, Y0=0, color="black"):
     """
     Draw a circle.
 
@@ -172,12 +173,12 @@ def draw_lens(D, RoC, middle=0):
     x = -RoC * np.cos(theta)
     y = -RoC * np.sin(theta)
     dx = RoC + x
-    dx -= dx[0]     # offset surface to center the lens on the vertex
+    dx -= dx[0]  # offset surface to center the lens on the vertex
 
     xx = np.concatenate((middle - dx, middle + dx))
     yy = np.concatenate((y, -y))
 
-    plt.fill(xx, yy, color='gray', alpha=0.8)
+    plt.fill(xx, yy, color="gray", alpha=0.8)
 
 
 def draw_mirror(D, RoC, vertex=0):
@@ -187,20 +188,20 @@ def draw_mirror(D, RoC, vertex=0):
     x = -RoC * np.cos(theta)
     y = -RoC * np.sin(theta)
     dx = RoC + x
-    dx -= dx[0]     # offset surface to center the lens on the vertex
+    dx -= dx[0]  # offset surface to center the lens on the vertex
 
     xx_last = np.array([vertex - dx[0] - D / 10, vertex - dx[0] - D / 10, vertex - dx[-1]])
     yy_last = np.array([y[-1], y[0], y[0]])
     xx = np.concatenate((vertex + dx, xx_last))
     yy = np.concatenate((y, yy_last))
 
-    plt.fill(xx, yy, color='gray', alpha=0.8)
+    plt.fill(xx, yy, color="gray", alpha=0.8)
 
 
 def conic_string(conic):
     """Create string that describes a conic value."""
     if np.isinf(conic):
-        return 'flat'
+        return "flat"
 
     if conic > 0:
         return "oblate spheroid"
