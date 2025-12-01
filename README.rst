@@ -85,7 +85,6 @@ Foucault Example
     RoC = 400
     z_offset = 10
     x_offset = -0.5
-    conic = 0
     phi = np.radians(0)
 
     foucault.plot_lens_layout(D, RoC, x_offset, z_offset)
