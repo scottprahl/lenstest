@@ -1,9 +1,12 @@
 .DS_Store
-.ipynb_checkpoints
 *.pyc
-lenstest/__pycache__/
-dist/*
-lenstest.egg-info/
+.cache/
+.jupyterlite.doit.db
+.pytest_cache/
+.ruff_cache/
+.venv/
+
+dist/
 docs/.ipynb_checkpoints/
 docs/_build/
 docs/api/
@@ -11,3 +14,19 @@ docs/aket6.cpp
 docs/aket6.py
 docs/cordero02 - Algorithm for the simulation of ronchigrams.pdf
 docs/ronchi.bas
+lenstest/__pycache__
+lenstest.egg-info/
+todo
+lite/
+tests/__pycache__/
+
+# JupyterLite build artifacts
+_site/
+.lite_src/
+.jupyterlite.doit.db
+
+# GitHub Pages deployment worktree
+.gh-pages/
+
+# Temporary files
+.tmp
