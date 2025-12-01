@@ -18,9 +18,7 @@ abstract: 'lenstest is a Python package for analyzing optical components using n
   simulation and interpretation of Ronchigrams, Foucaultgrams, and related fringe
   patterns for identifying surface deviations in spherical, paraboloidal, and hyperboloidal
   mirrors and lenses. The package is intended for research, education, and hands-on
-  optical fabrication measurements.
-
-  '
+  optical fabrication measurements.'
 keywords:
 - Ronchi
 - Foucault
