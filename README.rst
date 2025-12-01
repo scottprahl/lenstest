@@ -96,7 +96,10 @@ Foucault Example
 
 Produces
 
-.. image:: https://raw.githubusercontent.com/scottprahl/lenstest/main/docs/foucault.png
+.. image:: https://raw.githubusercontent.com/scottprahl/lenstest/main/docs/foucault_layout.png
+   :alt: layout
+
+.. image:: https://raw.githubusercontent.com/scottprahl/lenstest/main/docs/foucault_diagram.png
    :alt: foucougram
 
 Ronchi Example
