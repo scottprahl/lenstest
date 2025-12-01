@@ -205,8 +205,6 @@ lite: $(VENV)/.ready
 	@echo "==> Staging notebooks from docs -> $(STAGE_DIR)"
 	@/bin/rm -rf "$(STAGE_DIR)"; mkdir -p "$(STAGE_DIR)"
 	/bin/cp docs/*.ipynb "$(STAGE_DIR)"
-	/bin/rm "$(STAGE_DIR)/foucault-dynamic.ipynb"
-	/bin/rm "$(STAGE_DIR)/ronchi-dynamic.ipynb"
 	echo "==> Clearing outputs from staged notebooks"
 	"$(PYTHON)" -m jupyter nbconvert --clear-output --inplace "$(STAGE_DIR)"/*.ipynb
 	@echo "==> Building JupyterLite"

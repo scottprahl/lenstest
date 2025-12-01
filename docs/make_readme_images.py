@@ -3,6 +3,7 @@
 import matplotlib.pyplot as plt
 import lenstest
 
+
 def make_foucault_images():
     """Create Foucault image for README.rst."""
     D = 200
@@ -17,6 +18,7 @@ def make_foucault_images():
     lenstest.foucault.plot_knife_and_screen(D, RoC, x_offset, z_offset)
     plt.savefig("foucault_diagram.png", dpi=300)
     # plt.show()
+
 
 def make_ronchi_images():
     """Create Ronchi image for README.rst."""
