@@ -1,36 +1,33 @@
----
-name: pypi
+name: Publish to PyPI
 
-on:    # yamllint disable-line rule:truthy
-  release:
-    types: [published]
+on:
+  push:
+    tags: ['v*']
   workflow_dispatch:
 
 jobs:
-  publish:
+  build-and-publish:
     runs-on: ubuntu-latest
-
-    environment:
-      name: pypi repository
-      url: https://pypi.org/p/lenstest
-
+    environment: pypi-repository
     permissions:
-      id-token: write
-
+      contents: read      # checkout
+      id-token: write     # OIDC for Trusted Publishing
+    
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.12
-
-      - name: Build
-        run: |
-          pip install setuptools wheel twine build
-          pip install -r requirements.txt
-          python -m build
-
-      - name: Publish package to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          verbose: true
+    - uses: actions/checkout@v4
+    
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        cache: 'pip'
+    
+    - name: Build package
+      run: |
+        pip install build twine
+        python -m build
+    
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        verbose: true
+        attestations: true  # Optional: enable provenance
