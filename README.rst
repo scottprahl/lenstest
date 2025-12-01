@@ -10,9 +10,9 @@
    :target: https://github.com/conda-forge/lenstest-feedstock
    :alt: conda
 
-.. |zenodo| image:: https://zenodo.org/badge/357035523.svg
-   :target: https://zenodo.org/badge/latestdoi/357035523
-   :alt: zenodo
+.. |doi| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.8417590.svg
+   :target: https://doi.org/10.5281/zenodo.8417590
+   :alt: DOI
 
 .. |license| image:: https://img.shields.io/github/license/scottprahl/lenstest?color=68CA66
    :target: https://github.com/scottprahl/lenstest/blob/main/LICENSE.txt
@@ -30,25 +30,31 @@
    :target: https://pypi.org/project/lenstest/
    :alt: Downloads
 
+.. |lite| image:: https://img.shields.io/badge/try-JupyterLite-68CA66.svg
+   :target: https://scottprahl.github.io/lenstest/
+   :alt: Try JupyterLite
+
+
 lenstest
 ========
 
 by Scott Prahl
 
-|pypi| |github| |conda| |zenodo|
+|pypi| |github| |conda| |doi|
 
 |license| |test| |docs| |downloads|
 
+|lite|
+
 __________
 
-`lenstest` is a collection of routines for non-interferometric testing of lenses
+``lenstest`` is a collection of routines for non-interferometric testing of lenses
 and mirrors. Developed by Scott Prahl, this package contains code for the
 Foucault Knife Edge Test and the Ronchi Ruling Test. With `lenstest`, users can
 test the quality of their lenses and mirrors without the need for
 interferometric equipment. 
 
-Detailed documentation is available at
-<https://lenstest.readthedocs.io>.
+Detailed documentation is available at <https://lenstest.readthedocs.io>.
 
 
 Installation
@@ -62,11 +68,9 @@ Installation
 
     conda install -c conda-forge lenstest
 
-or use immediately by clicking the Google Colaboratory button below
+or use immediately by clicking the Jupyterlite button below
 
-.. image:: https://colab.research.google.com/assets/colab-badge.svg
-   :target: https://colab.research.google.com/github/scottprahl/lenstest/blob/main
-   :alt: Colab
+    |lite|
 
 Foucault Example
 ----------------
@@ -139,7 +143,30 @@ Produces
 .. image:: https://raw.githubusercontent.com/scottprahl/lenstest/main/docs/ronchi.png
    :alt: Ronchigram
 
+Citation
+--------
+
+If you use lenstest in academic, instructional, or applied technical work, please cite:
+
+Prahl, S. (2023). lenstest: A Python module for non-interferometric testing of mirrors and lenses (Version 0.9.0) 
+Computer Software. Zenodo. https://doi.org/10.5281/zenodo.8417590
+
+BibTeX
+^^^^^^
+
+.. code-block:: bibtex
+
+    @software{lenstest_prahl_2023,
+    author = {Scott Prahl},
+    title = {lenstest: A Python module for non-interferometric testing of mirrors and lenses},
+    year = {2023},
+    version = {0.9.0},
+    doi = {10.5281/zenodo.8417590},
+    url = {https://github.com/scottprahl/lenstest},
+    publisher = {Zenodo}
+    }
+
 License
 -------
 
-`lenstest` is licensed under the terms of the MIT license.
+``lenstest`` is licensed under the terms of the MIT license.
