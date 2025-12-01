@@ -77,29 +77,21 @@ Foucault Example
 
 .. code-block:: python
 
-    import numpy as np
     import matplotlib.pyplot as plt
-    from lenstest import foucault
+    import lenstest
 
     D = 200
     RoC = 400
     z_offset = 10
     x_offset = -0.5
-    phi = np.radians(0)
 
-    foucault.plot_lens_layout(D, RoC, x_offset, z_offset)
-    plt.show()
-
-    foucault.plot_knife_and_screen(D, RoC, x_offset, z_offset, phi=phi)
+    lenstest.foucault.plot_lens_layout(D, RoC, x_offset, z_offset)
     plt.show()
 
 Produces
 
-.. image:: https://raw.githubusercontent.com/scottprahl/lenstest/main/docs/foucault_layout.png
+.. image:: https://raw.githubusercontent.com/scottprahl/lenstest/main/docs/foucault.png
    :alt: layout
-
-.. image:: https://raw.githubusercontent.com/scottprahl/lenstest/main/docs/foucault_diagram.png
-   :alt: foucougram
 
 Ronchi Example
 --------------
@@ -108,16 +100,13 @@ Ronchi Example
 
 .. code-block:: python
 
-    import numpy as np
     import matplotlib.pyplot as plt
-    from lenstest import ronchi
-    from lenstest.lenstest import draw_circle
+    import lenstest
 
     D = 10000  # 10 meter mirror
     F = 5
     conic = -1
-    lp_per_mm = 0.133  # grating frequency lp/mm
-
+    lp_per_mm = 0.133  # grating frequency line-pairs/mm
     RoC =  F * D * 2
 
     print("    Mirror Diameter = %.0f mm" % D)
@@ -130,9 +119,9 @@ Ronchi Example
 
     for i, z_offset in enumerate([-63,35,133,231,329,429]):
         plt.subplot(2,3,i+1)
-        x,y = ronchi.gram(D, RoC, lp_per_mm, z_offset, conic=conic)
+        x,y = lenstest.ronchi.gram(D, RoC, lp_per_mm, z_offset, conic=conic)
         plt.plot(x,y,'o', markersize=0.1, color='blue')
-        lenstest.draw_circle(D/2)
+        lenstest.lenstest.draw_circle(D/2)
         plt.title("%.0fmm from focus"%z_offset)
         plt.gca().set_aspect("equal")
         if i in [1,2,4,5]:
@@ -150,6 +139,7 @@ Produces
     Radius of Curvature = 100000 mm
            Focal Length = 50000 mm
        Ronchi Frequency = 0.133 lp/mm
+       
 
 .. image:: https://raw.githubusercontent.com/scottprahl/lenstest/main/docs/ronchi.png
    :alt: Ronchigram

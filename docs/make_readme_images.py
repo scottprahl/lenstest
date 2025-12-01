@@ -1,30 +1,22 @@
 """Create the images needed for README.rst."""
 
-import numpy as np
 import matplotlib.pyplot as plt
-from lenstest import foucault, ronchi
-from lenstest import lenstest
-
+import lenstest
 
 def make_foucault_images():
-    """Create first two foucault images for README.rst."""
+    """Create Foucault image for README.rst."""
     D = 200
     RoC = 400
     z_offset = 10
     x_offset = -0.5
-    phi = np.radians(0)
 
-    foucault.plot_lens_layout(D, RoC, x_offset, z_offset)
-    plt.savefig("foucault_layout.png", dpi=300)
-    # plt.show()
-
-    foucault.plot_knife_and_screen(D, RoC, x_offset, z_offset, phi=phi)
-    plt.savefig("foucault_diagram.png", dpi=300)
+    lenstest.foucault.plot_lens_layout(D, RoC, x_offset, z_offset)
+    plt.savefig("foucault.png", dpi=300)
     # plt.show()
 
 
 def make_ronchi_images():
-    """Create Ronchi images for README.rst."""
+    """Create Ronchi image for README.rst."""
     D = 10000  # 10 meter mirror
     F = 5
     conic = -1
@@ -42,9 +34,9 @@ def make_ronchi_images():
 
     for i, z_offset in enumerate([-63, 35, 133, 231, 329, 429]):
         plt.subplot(2, 3, i + 1)
-        x, y = ronchi.gram(D, RoC, lp_per_mm, z_offset, conic=conic)
+        x, y = lenstest.ronchi.gram(D, RoC, lp_per_mm, z_offset, conic=conic)
         plt.plot(x, y, "o", markersize=0.1, color="blue")
-        lenstest.draw_circle(D / 2)
+        lenstest.lenstest.draw_circle(D / 2)
         plt.title("%.0fmm from focus" % z_offset)
         plt.gca().set_aspect("equal")
         if i in [1, 2, 4, 5]:
