@@ -1,4 +1,0 @@
-nbsphinx
-sphinx-automodapi
-sphinx-rtd-theme
-lenstest
