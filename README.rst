@@ -38,8 +38,6 @@
 lenstest
 ========
 
-by Scott Prahl
-
 |pypi| |github| |conda| |doi|
 
 |license| |test| |docs| |downloads|
