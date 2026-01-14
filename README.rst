@@ -153,7 +153,7 @@ Citation
 
 If you use lenstest in academic, instructional, or applied technical work, please cite:
 
-Prahl, S. (2025). lenstest: A Python module for non-interferometric testing of mirrors and lenses (Version 1.0.0) 
+Prahl, S. (2026). lenstest: A Python module for non-interferometric testing of mirrors and lenses (Version 1.0.1) 
 Computer Software. Zenodo. https://doi.org/10.5281/zenodo.8417590
 
 BibTeX
@@ -161,11 +161,11 @@ BibTeX
 
 .. code-block:: bibtex
 
-    @software{lenstest_prahl_2025,
+    @software{lenstest_prahl_2026,
     author = {Scott Prahl},
     title = {lenstest: A Python module for non-interferometric testing of mirrors and lenses},
-    year = {2025},
-    version = {1.0.0},
+    year = {2026},
+    version = {1.0.1},
     doi = {10.5281/zenodo.8417590},
     url = {https://github.com/scottprahl/lenstest},
     publisher = {Zenodo}
