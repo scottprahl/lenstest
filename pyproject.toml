@@ -5,10 +5,6 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.dynamic]
 version = {attr = "lenstest.__version__"}
 
-[tool.setuptools]
-include-package-data = true
-packages = { find = { where = ["."], include = ["lenstest*"] } }
-
 [project]
 name = "lenstest"
 description = "Routines for analysis of non-interfometric wavefront testing."
