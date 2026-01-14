@@ -5,20 +5,42 @@
         {
           "comment_text": "",
           "digests": {
-            "md5": "33a2817a6be32cada23b812f4e165030",
-            "sha256": "32085259366a10bb55fc88cd5b3aed19b2b775c06fe057213019e45b323fce6d"
+            "md5": "7c3ee03666af063feb03ce02b498d093",
+            "sha256": "f561017d37402e0581f883f45a86f0c1abebfce9ec01b31dd38ea6dbd77c0457"
           },
           "downloads": -1,
           "filename": "lenstest-1.0.0-py3-none-any.whl",
           "has_sig": false,
-          "md5_digest": "33a2817a6be32cada23b812f4e165030",
+          "md5_digest": "7c3ee03666af063feb03ce02b498d093",
           "packagetype": "bdist_wheel",
           "python_version": "py3",
           "requires_python": ">=3.9",
-          "size": 12904,
-          "upload_time": "2025-12-01T20:37:32.660700Z",
-          "upload_time_iso_8601": "2025-12-01T20:37:32.660700Z",
+          "size": 13123,
+          "upload_time": "2026-01-14T21:52:04.159439Z",
+          "upload_time_iso_8601": "2026-01-14T21:52:04.159439Z",
           "url": "./lenstest-1.0.0-py3-none-any.whl",
+          "yanked": false,
+          "yanked_reason": null
+        }
+      ],
+      "1.0.1": [
+        {
+          "comment_text": "",
+          "digests": {
+            "md5": "719b81a339ecaf90d74181dabbbbd358",
+            "sha256": "48d352e0ab7ecd2f91ffd814a1f9970bcf358fee98281da6e751c228a8b8c777"
+          },
+          "downloads": -1,
+          "filename": "lenstest-1.0.1-py3-none-any.whl",
+          "has_sig": false,
+          "md5_digest": "719b81a339ecaf90d74181dabbbbd358",
+          "packagetype": "bdist_wheel",
+          "python_version": "py3",
+          "requires_python": ">=3.9",
+          "size": 13117,
+          "upload_time": "2026-01-14T22:24:31.957710Z",
+          "upload_time_iso_8601": "2026-01-14T22:24:31.957710Z",
+          "url": "./lenstest-1.0.1-py3-none-any.whl",
           "yanked": false,
           "yanked_reason": null
         }
