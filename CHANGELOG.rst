@@ -1,6 +1,15 @@
 Changelog
 =========
 
+1.0.1 (1/14/2026)
+-----
+  * remove requirements*.txt, all deps in pyproject.toml
+  * update readthedocs configuration
+  * update docs/conf.py
+  * update github actions
+  * improve update_citation.py
+  * move jupyter_lite_config.json to ofiber folder
+
 1.0.0
 -----
   * Jupyterlite support

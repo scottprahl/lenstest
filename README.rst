@@ -47,7 +47,7 @@ lenstest
 __________
 
 ``lenstest`` is a collection of routines for non-interferometric testing of lenses
-and mirrors. Developed by Scott Prahl, this package contains code for the
+and mirrors. This package contains code for the
 Foucault Knife Edge Test and the Ronchi Ruling Test. With `lenstest`, users can
 test the quality of their lenses and mirrors without the need for
 interferometric equipment. 
