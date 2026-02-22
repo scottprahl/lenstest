@@ -30,16 +30,11 @@ PORT            ?= 8000
 PYTEST_OPTS     :=
 SPHINX_OPTS     := -T -E -b html -d $(DOCS_DIR)/_build/doctrees -D language=en
 
-TEST_TARGETS                := tests/test_foucault.py tests/test_lenstest.py tests/test_ronchi.py
-NOTEBOOK_TEST_TARGETS       := tests/test_all_notebooks.py
 PYLINT_TARGETS              := $(PACKAGE)/*.py tests/*.py .github/scripts/update_citation.py
 YAML_TARGETS                := .github/workflows/citation.yaml .github/workflows/pypi.yaml .github/workflows/test.yaml .readthedocs.yaml
 RST_TARGETS                 := README.rst CHANGELOG.rst $(DOCS_DIR)/index.rst $(DOCS_DIR)/changelog.rst
 RST_AUTOMODAPI_TARGETS      := $(DOCS_DIR)/$(PACKAGE).rst
 DOC_NOTEBOOK_TARGETS        := $(DOCS_DIR)/*.ipynb
-CLEAN_DIR_TARGETS           := .ruff_cache $(PACKAGE).egg-info $(DOCS_DIR)/api $(DOCS_DIR)/_build tests/charts dist
-LITE_CLEAN_DIR_TARGETS      := $(STAGE_DIR) $(OUT_ROOT) $(DOIT_DB) .doit.db .jupyterlite.doit.db.db _output _site
-REALCLEAN_DIR_TARGETS       := .cache .tmp $(WORKTREE) .venv $(DOCS_DIR)/api $(DOCS_DIR)/_static $(DOCS_DIR)/_templates
 
 .PHONY: help
 help:
@@ -84,12 +79,11 @@ dist:
 
 .PHONY: test
 test:
-	$(RUN) pytest $(PYTEST_OPTS) $(TEST_TARGETS)
+	$(RUN) pytest $(PYTEST_OPTS) tests --ignore=tests/test_all_notebooks.py
 
 .PHONY: note-test
 note-test:
-	$(RUN) pytest --verbose $(NOTEBOOK_TEST_TARGETS)
-	@echo "✅ Notebook check complete"
+	$(RUN) pytest --verbose tests/test_all_notebooks.py
 
 .PHONY: html
 html:
@@ -102,7 +96,7 @@ yaml-check:
 	@$(RUN) yamllint $(YAML_TARGETS)
 
 .PHONY: rst-check
-rst-check:    ## Validate all RST files
+rst-check:
 	@$(RUN) rstcheck $(RST_TARGETS)
 	@$(RUN) rstcheck --ignore-directives automodapi $(RST_AUTOMODAPI_TARGETS)
 
@@ -149,33 +143,15 @@ lab:
 	$(RUN) python -m jupyter lab --ServerApp.root_dir="$(CURDIR)"
 
 .PHONY: lite
-lite: $(LITE_CONFIG)
+lite: lite-clean $(LITE_CONFIG)
 	@echo "==> Building package wheel for PyOdide"
 	@$(RUN) python -m build
 
-	@echo "==> Checking for .gh-pages worktree"
-	@if [ -d "$(WORKTREE)" ]; then \
-		echo "    Found .gh-pages worktree, removing..."; \
-		git worktree remove "$(WORKTREE)" --force 2>/dev/null || true; \
-		git worktree prune; \
-		$(RMR) "$(WORKTREE)"; \
-		echo "    ✓ Removed"; \
-	else \
-		echo "    No .gh-pages worktree found"; \
-	fi
-
-	@echo "==> Cleaning previous builds"
-	@$(RMR) "$(OUT_ROOT)"
-	@$(RMR) "$(DOIT_DB)"
-	@$(RMR) ".doit.db"
-	@$(RMR) ".jupyterlite.doit.db.db"
-	@echo "    ✓ Cleaned"
-
 	@echo "==> Staging notebooks from docs -> $(STAGE_DIR)"
 	@$(RMR) "$(STAGE_DIR)"; mkdir -p "$(STAGE_DIR)"
-	cp $(DOC_NOTEBOOK_TARGETS) "$(STAGE_DIR)"
-	@echo "==> Clearing outputs from staged notebooks"
+	cp $(DOCS_DIR)/*.ipynb "$(STAGE_DIR)"
 	$(RUN) python -m jupyter nbconvert --clear-output --inplace "$(STAGE_DIR)"/*.ipynb
+
 	@echo "==> Building JupyterLite"
 	@$(RUN_LITE) jupyter lite build \
 		--config="$(LITE_CONFIG)" \
@@ -184,8 +160,6 @@ lite: $(LITE_CONFIG)
 
 	@echo "==> Adding .nojekyll for GitHub Pages"
 	@touch "$(OUT_DIR)/.nojekyll"
-
-	@echo "✅ Build complete -> $(OUT_DIR)"
 
 .PHONY: lite-serve
 lite-serve:
@@ -196,9 +170,7 @@ lite-serve:
 	$(RUN_LITE) python -m http.server -d "$(OUT_ROOT)" --bind $(HOST) $(PORT)
 
 .PHONY: lite-deploy
-lite-deploy:
-	@echo "==> Sanity check"
-	@test -d "$(OUT_DIR)" || { echo "❌ Run 'make lite' first"; exit 1; }
+lite-deploy: lite
 
 	@echo "==> Ensure $(PAGES_BRANCH) branch exists"
 	@if ! git show-ref --verify --quiet refs/heads/$(PAGES_BRANCH); then \
@@ -238,15 +210,17 @@ clean:
 	@find . -name '.DS_Store' -type f -exec $(RM) {} +
 	@find . -name '.ipynb_checkpoints' -type d -prune -exec $(RMR) {} +
 	@find . -name '.pytest_cache' -type d -prune -exec $(RMR) {} +
-	@$(RMR) $(CLEAN_DIR_TARGETS)
+	@$(RMR) .ruff_cache dist $(PACKAGE).egg-info
+	@$(RMR) $(DOCS_DIR)/api $(DOCS_DIR)/_build
 
 .PHONY: lite-clean
 lite-clean:
 	@echo "==> Cleaning JupyterLite build artifacts"
-	@$(RMR) $(LITE_CLEAN_DIR_TARGETS)
+	@$(RMR) $(STAGE_DIR) $(OUT_ROOT) $(DOIT_DB)
+	@$(RMR) .cache dist $(PACKAGE).egg-info
 
 .PHONY: realclean
 realclean: lite-clean clean
 	@echo "==> Deep cleaning: removing .venv and deployment worktree"
-#	@git worktree remove "$(WORKTREE)" --force 2>/dev/null || true
-	@$(RMR) $(REALCLEAN_DIR_TARGETS)
+	$(RMR) $(WORKTREE)
+	$(RMR) .venv
