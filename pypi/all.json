@@ -5,19 +5,19 @@
         {
           "comment_text": "",
           "digests": {
-            "md5": "68419d85ab37a58e1e7cc0612e42e95f",
-            "sha256": "74075c4f4a4e7842274ea6af96520663da25e62164ea017d5164c2c7a896244c"
+            "md5": "d731d7756e2b17a9594f832da6814073",
+            "sha256": "020211bdf414e5d663f342e906e8983d9dffcd053fb3993307bf3005e4be9293"
           },
           "downloads": -1,
           "filename": "lenstest-1.0.1-py3-none-any.whl",
           "has_sig": false,
-          "md5_digest": "68419d85ab37a58e1e7cc0612e42e95f",
+          "md5_digest": "d731d7756e2b17a9594f832da6814073",
           "packagetype": "bdist_wheel",
           "python_version": "py3",
           "requires_python": ">=3.10",
           "size": 13140,
-          "upload_time": "2026-02-22T17:41:44.024342Z",
-          "upload_time_iso_8601": "2026-02-22T17:41:44.024342Z",
+          "upload_time": "2026-02-22T17:58:30.320566Z",
+          "upload_time_iso_8601": "2026-02-22T17:58:30.320566Z",
           "url": "./lenstest-1.0.1-py3-none-any.whl",
           "yanked": false,
           "yanked_reason": null
