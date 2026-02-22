@@ -6,7 +6,7 @@ Documentation and examples are available at <https://lenstest.readthedocs.io>
 
 import numpy as np
 import matplotlib.pyplot as plt
-import lenstest
+from . import lenstest as lenstest_core
 
 __all__ = ("gram", "plot_gram", "plot_ruling_and_screen", "plot_lens_layout", "plot_mirror_layout")
 
@@ -45,7 +45,7 @@ def _transmitted(RoC, lpm, z_offset, X, Y, conic=0, mask=False, phi=0):
     if mask:
         sagitta = 0
     else:
-        sagitta = lenstest.lenstest.sagitta(RoC, conic, X, Y)
+        sagitta = lenstest_core.sagitta(RoC, conic, X, Y)
 
     # rotate points
     Xr = X * np.cos(phi) + Y * np.sin(phi)
@@ -94,7 +94,7 @@ def gram(D, RoC, lpm, z_offset, conic=0, phi=0, N=100000, invert=False, on_grid=
     Returns:
         x, y: masked listed of points to plot
     """
-    X, Y = lenstest.lenstest.XY_test_points(D, N=N, on_grid=on_grid)
+    X, Y = lenstest_core.XY_test_points(D, N=N, on_grid=on_grid)
 
     T_mask = _transmitted(RoC, lpm, z_offset, X, Y, conic=conic, mask=mask, phi=phi)
 
@@ -134,7 +134,7 @@ def plot_gram(D, RoC, lpm, z_offset, conic=0, phi=0, on_grid=False, invert=False
     plt.plot(x, y, "o", markersize=0.1, color="white")
 
     # Draw circle showing spotsize on projection screen
-    lenstest.lenstest.draw_circle(D / 2, color="green")
+    lenstest_core.draw_circle(D / 2, color="green")
 
     # limit plot to slightly larger than the beam size
     size = D / 2 * 1.2
@@ -191,7 +191,7 @@ def plot_ruling_and_screen(D, RoC, lpm, z_offset, conic=0, phi=0, init=True, on_
     r_geometric = abs(D / 2 / RoC * z_offset)  # mm
     r_diffraction = 0.5 * 1e-6 * (RoC / 2) / D  # mm
     r_spot = max(r_geometric, r_diffraction)
-    lenstest.lenstest.draw_circle(r_spot, color="blue")
+    lenstest_core.draw_circle(r_spot, color="blue")
     if invert:
         plt.plot(0, 0, "k+", markersize=5)
     else:
@@ -220,7 +220,7 @@ def plot_ruling_and_screen(D, RoC, lpm, z_offset, conic=0, phi=0, init=True, on_
     plt.plot(x, y, "o", markersize=0.1, color="white")
 
     # Draw circle showing spotsize on projection screen
-    lenstest.lenstest.draw_circle(D / 2, color="green")
+    lenstest_core.draw_circle(D / 2, color="green")
 
     # limit plot to slightly larger than the beam size
     size = D / 2 * 1.2
@@ -261,7 +261,7 @@ def plot_lens_layout(D, f, z_offset):
     plt.plot([-4 * f, -2 * f, 2 * f], [0, -DD / 4, DD / 4], color="black", linewidth=1)
 
     # draw the lens
-    lenstest.lenstest.draw_lens(D, RoC, -2 * f)
+    lenstest_core.draw_lens(D, RoC, -2 * f)
     plt.text(-2 * f, D / 2, "lens under test", ha="left", color="blue")
 
     # focus plane
@@ -319,7 +319,7 @@ def plot_mirror_layout(D, RoC, z_offset):
     plt.plot([0, -RoC, 0, D], [yo, -DD / 2, -yo, -y_screen - 2 * yo], color="black", linewidth=1)
 
     # draw the mirror
-    lenstest.lenstest.draw_mirror(D, RoC, -RoC)
+    lenstest_core.draw_mirror(D, RoC, -RoC)
     plt.text(-RoC, D / 2, "mirror under test", ha="left", color="blue")
 
     # focus plane
