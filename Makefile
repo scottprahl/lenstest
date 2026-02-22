@@ -1,22 +1,21 @@
 PACKAGE         := lenstest
 GITHUB_USER     := scottprahl
 
+PY_VERSION      ?= 3.14
 UV              ?= uv
 RUN             := $(UV) run --extra dev
 RUN_DOCS        := $(UV) run --extra docs
 RUN_LITE        := $(UV) run --extra lite
-
 RM              ?= rm -f
 RMR             ?= rm -rf
 
-ROOT            := $(abspath .)
-DOCS_DIR        := $(ROOT)/docs
+DOCS_DIR        := docs
 HTML_DIR        := $(DOCS_DIR)/_build/html
-OUT_ROOT        := $(ROOT)/_site
+OUT_ROOT        := _site
 OUT_DIR         := $(OUT_ROOT)/$(PACKAGE)
-STAGE_DIR       := $(ROOT)/.lite_src
-DOIT_DB         := $(ROOT)/.jupyterlite.doit.db
-LITE_CONFIG     := $(ROOT)/$(PACKAGE)/jupyter_lite_config.json
+STAGE_DIR       := .lite_src
+DOIT_DB         := .jupyterlite.doit.db
+LITE_CONFIG     := $(PACKAGE)/jupyter_lite_config.json
 
 # --- GitHub Pages deploy config ---
 PAGES_BRANCH    := gh-pages
@@ -70,7 +69,6 @@ help:
 
 .PHONY: venv
 venv:
-	@echo "==> Syncing .venv with uv"
 	@$(UV) sync --python $(PY_VERSION) --extra dev --extra docs --extra lite
 
 .PHONY: dist
@@ -143,10 +141,7 @@ lab:
 	$(RUN) python -m jupyter lab --ServerApp.root_dir="$(CURDIR)"
 
 .PHONY: lite
-lite: lite-clean $(LITE_CONFIG)
-	@echo "==> Building package wheel for PyOdide"
-	@$(RUN) python -m build
-
+lite: lite-clean $(LITE_CONFIG) dist
 	@echo "==> Staging notebooks from docs -> $(STAGE_DIR)"
 	@$(RMR) "$(STAGE_DIR)"; mkdir -p "$(STAGE_DIR)"
 	cp $(DOCS_DIR)/*.ipynb "$(STAGE_DIR)"
@@ -157,9 +152,7 @@ lite: lite-clean $(LITE_CONFIG)
 		--config="$(LITE_CONFIG)" \
 		--contents="$(STAGE_DIR)" \
 		--output-dir="$(OUT_DIR)"
-
-	@echo "==> Adding .nojekyll for GitHub Pages"
-	@touch "$(OUT_DIR)/.nojekyll"
+	@touch "$(OUT_DIR)/.nojekyll"   # for github pages
 
 .PHONY: lite-serve
 lite-serve:
@@ -171,7 +164,6 @@ lite-serve:
 
 .PHONY: lite-deploy
 lite-deploy: lite
-
 	@echo "==> Ensure $(PAGES_BRANCH) branch exists"
 	@if ! git show-ref --verify --quiet refs/heads/$(PAGES_BRANCH); then \
 	  CURRENT=$$(git branch --show-current); \
@@ -203,8 +195,16 @@ lite-deploy: lite
 	    echo "✅ Deployed to https://$(GITHUB_USER).github.io/$(PACKAGE)/"; \
 	  fi
 
+.PHONY: lite-clean
+lite-clean:
+	@echo "==> Cleaning JupyterLite build artifacts"
+	@$(RMR) "$(STAGE_DIR)"
+	@$(RMR) "$(OUT_ROOT)"
+	@$(RMR) "$(DOIT_DB)"
+	@$(RMR) .cache dist $(PACKAGE).egg-info
+
 .PHONY: clean
-clean:
+clean: lite-clean
 	@echo "==> Cleaning build artifacts"
 	@find . -name '__pycache__' -type d -exec $(RMR) {} +
 	@find . -name '.DS_Store' -type f -exec $(RM) {} +
@@ -213,14 +213,11 @@ clean:
 	@$(RMR) .ruff_cache dist $(PACKAGE).egg-info
 	@$(RMR) $(DOCS_DIR)/api $(DOCS_DIR)/_build
 
-.PHONY: lite-clean
-lite-clean:
-	@echo "==> Cleaning JupyterLite build artifacts"
-	@$(RMR) $(STAGE_DIR) $(OUT_ROOT) $(DOIT_DB)
-	@$(RMR) .cache dist $(PACKAGE).egg-info
-
 .PHONY: realclean
 realclean: lite-clean clean
 	@echo "==> Deep cleaning: removing .venv and deployment worktree"
-	$(RMR) $(WORKTREE)
+	@git worktree remove "$(WORKTREE)" --force 2>/dev/null || true
+	@git worktree prune || true
+	$(RMR) "$(WORKTREE)"
 	$(RMR) .venv
+	@$(RM) uv.lock
