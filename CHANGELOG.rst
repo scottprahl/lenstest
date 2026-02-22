@@ -2,7 +2,7 @@ Changelog
 =========
 
 Unreleased ()
-------------
+--------------
   * switch Makefile execution to uv extras (`dev`, `docs`, `lite`) and remove venv-ready prereqs
   * add shared Makefile target lists for pytest, pylint, YAML, and RST checks
   * replace hardcoded `rm`/`find ... -delete`/`find ... -exec rm` cleanup calls with `$(RM)` and `$(RMR)`
