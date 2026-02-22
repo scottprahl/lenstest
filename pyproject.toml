@@ -9,7 +9,7 @@ version = {attr = "lenstest.__version__"}
 name = "lenstest"
 description = "Routines for analysis of non-interfometric wavefront testing."
 readme = "README.rst"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 keywords = [
     "Ronchi",
     "Foucault",
@@ -30,10 +30,11 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Science/Research",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering :: Physics",
 ]
 authors = [{name = "Scott Prahl", email = "scott.prahl@oit.edu"}]
@@ -46,10 +47,11 @@ dependencies = [
 
 [project.optional-dependencies]
 docs = [
-  "Sphinx==8.1.3",
-  "nbsphinx==0.9.7",
+  "Sphinx>=8.1.3",
+  "nbsphinx>=0.9.7",
   "sphinx_automodapi",
   "sphinx_rtd_theme",
+  "ipython",
 ]
 
 dev = [
@@ -57,7 +59,7 @@ dev = [
   "pytest",
   "ruff",
   "yamllint",
-  "rstcheck",
+  "rstcheck[sphinx,toml]",
   "pylint",
   "pyroma",
   "black[jupyter]",
@@ -76,8 +78,8 @@ dev = [
 ]
 
 lite = [
-  "jupyterlite-core==0.6.4",
-  "jupyterlite-pyodide-kernel==0.6.1",
+  "jupyterlite-core>=0.7,<0.8",
+  "jupyterlite-pyodide-kernel>=0.7,<0.8",
 ]
 
 [project.urls]

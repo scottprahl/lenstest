@@ -72,116 +72,120 @@ def get_code_version() -> str:
     return ver
 
 
-def main() -> None:
-    """Update CITATION.cff and README.rst from latest release."""
-    # --------------------------------------------------------------------
-    # Get data
-    # --------------------------------------------------------------------
-    release_date, year = get_release_date()
-    version = get_code_version()
+def _update_preferred_citation(preferred: dict, year: str, version: str) -> bool:
+    """Update preferred-citation fields and return whether any values changed."""
+    changed = False
 
-    # --------------------------------------------------------------------
-    # Update CITATION.cff
-    # --------------------------------------------------------------------
+    if str(preferred.get("year")) != str(year):
+        preferred["year"] = int(year) if year.isdigit() else year
+        changed = True
+
+    if preferred.get("version") != version:
+        preferred["version"] = version
+        changed = True
+
+    return changed
+
+
+def update_citation_file(release_date: str, year: str, version: str) -> None:
+    """Update CITATION.cff from release metadata."""
     citation_path = Path("CITATION.cff")
-    if citation_path.exists():
-        with citation_path.open("r", encoding="utf-8") as f:
-            cff_data = yaml.safe_load(f)
-
-        if not isinstance(cff_data, dict):
-            raise RuntimeError("CITATION.cff does not contain a YAML mapping at top level.")
-
-        cff_changed = False
-
-        # Top-level date-released from GitHub
-        if cff_data.get("date-released") != release_date:
-            cff_data["date-released"] = release_date
-            cff_changed = True
-
-        # Top-level version from __init__.__version__
-        if cff_data.get("version") != version:
-            cff_data["version"] = version
-            cff_changed = True
-
-        # Optional: preferred-citation block (if present)
-        preferred = cff_data.get("preferred-citation")
-        if isinstance(preferred, dict):
-            # year
-            if str(preferred.get("year")) != str(year):
-                preferred["year"] = int(year) if year.isdigit() else year
-                cff_changed = True
-
-            # version
-            if preferred.get("version") != version:
-                preferred["version"] = version
-                cff_changed = True
-
-            cff_data["preferred-citation"] = preferred
-
-        if cff_changed:
-            with citation_path.open("w", encoding="utf-8") as f:
-                yaml.dump(cff_data, f, sort_keys=False)
-            print(f"CITATION.cff updated → version: {version}, date: {release_date}")
-        else:
-            print("CITATION.cff: no change in release date, version, or preferred-citation.")
-    else:
+    if not citation_path.exists():
         print("CITATION.cff not found; skipping CITATION.cff update.")
+        return
 
-    # --------------------------------------------------------------------
-    # Update citation block in README.rst
-    # --------------------------------------------------------------------
+    with citation_path.open("r", encoding="utf-8") as f:
+        cff_data = yaml.safe_load(f)
+
+    if not isinstance(cff_data, dict):
+        raise RuntimeError("CITATION.cff does not contain a YAML mapping at top level.")
+
+    cff_changed = False
+
+    if cff_data.get("date-released") != release_date:
+        cff_data["date-released"] = release_date
+        cff_changed = True
+
+    if cff_data.get("version") != version:
+        cff_data["version"] = version
+        cff_changed = True
+
+    preferred = cff_data.get("preferred-citation")
+    if isinstance(preferred, dict):
+        cff_changed = _update_preferred_citation(preferred, year, version) or cff_changed
+        cff_data["preferred-citation"] = preferred
+
+    if cff_changed:
+        with citation_path.open("w", encoding="utf-8") as f:
+            yaml.dump(cff_data, f, sort_keys=False)
+        print(f"CITATION.cff updated → version: {version}, date: {release_date}")
+    else:
+        print("CITATION.cff: no change in release date, version, or preferred-citation.")
+
+
+def update_readme_citation(year: str, version: str) -> None:
+    """Update README.rst citation text from release metadata."""
     readme_path = Path("README.rst")
     if not readme_path.exists():
         print("README.rst not found; skipping README citation update.")
+        return
+
+    text = readme_path.read_text(encoding="utf-8")
+    original_text = text
+
+    # 1. Prose citation year:
+    #    Prahl, S. (2025). *ofiber: ...* (Version 0.9.0) [Computer software]. ...
+    text = re.sub(
+        r"(Prahl,\s*S\.\s*\()(\d{4})(\)\.)",
+        lambda m: f"{m.group(1)}{year}{m.group(3)}",
+        text,
+    )
+
+    # 2. Prose citation version: "(Version X.Y.Z)"
+    text = re.sub(
+        r"\(Version [^)]+\)",
+        f"(Version {version})",
+        text,
+    )
+
+    # 3. BibTeX key:
+    #    @software{ofiber_prahl_2025,
+    # Make this generic over the repo name: "<whatever>_prahl_YYYY"
+    text = re.sub(
+        r"(@software\{[A-Za-z0-9_]+_prahl_)(\d{4})(\s*,)",
+        lambda m: f"{m.group(1)}{year}{m.group(3)}",
+        text,
+    )
+
+    # 4. BibTeX year field:
+    #    year      = {2025},
+    text = re.sub(
+        r"(year\s*=\s*\{)(\d{4})(\s*\},)",
+        lambda m: f"{m.group(1)}{year}{m.group(3)}",
+        text,
+    )
+
+    # 5. BibTeX version field:
+    #    version   = {0.9.0},
+    text = re.sub(
+        r"(version\s*=\s*\{)([^}]+)(\s*\},)",
+        lambda m: f"{m.group(1)}{version}{m.group(3)}",
+        text,
+    )
+
+    if text != original_text:
+        readme_path.write_text(text, encoding="utf-8")
+        print(f"README.rst citation block updated → version: {version}, year: {year}")
     else:
-        text = readme_path.read_text(encoding="utf-8")
-        original_text = text
+        print("README.rst citation block already up to date.")
 
-        # 1. Prose citation year:
-        #    Prahl, S. (2025). *ofiber: ...* (Version 0.9.0) [Computer software]. ...
-        text = re.sub(
-            r"(Prahl,\s*S\.\s*\()(\d{4})(\)\.)",
-            lambda m: f"{m.group(1)}{year}{m.group(3)}",
-            text,
-        )
 
-        # 2. Prose citation version: "(Version X.Y.Z)"
-        text = re.sub(
-            r"\(Version [^)]+\)",
-            f"(Version {version})",
-            text,
-        )
-
-        # 3. BibTeX key:
-        #    @software{ofiber_prahl_2025,
-        # Make this generic over the repo name: "<whatever>_prahl_YYYY"
-        text = re.sub(
-            r"(@software\{[A-Za-z0-9_]+_prahl_)(\d{4})(\s*,)",
-            lambda m: f"{m.group(1)}{year}{m.group(3)}",
-            text,
-        )
-
-        # 4. BibTeX year field:
-        #    year      = {2025},
-        text = re.sub(
-            r"(year\s*=\s*\{)(\d{4})(\s*\},)",
-            lambda m: f"{m.group(1)}{year}{m.group(3)}",
-            text,
-        )
-
-        # 5. BibTeX version field:
-        #    version   = {0.9.0},
-        text = re.sub(
-            r"(version\s*=\s*\{)([^}]+)(\s*\},)",
-            lambda m: f"{m.group(1)}{version}{m.group(3)}",
-            text,
-        )
-
-        if text != original_text:
-            readme_path.write_text(text, encoding="utf-8")
-            print(f"README.rst citation block updated → version: {version}, year: {year}")
-        else:
-            print("README.rst citation block already up to date.")
+def main() -> None:
+    """Update CITATION.cff and README.rst from latest release."""
+    release_date, year = get_release_date()
+    version = get_code_version()
+    update_citation_file(release_date, year, version)
+    update_readme_citation(year, version)
 
 
 if __name__ == "__main__":
