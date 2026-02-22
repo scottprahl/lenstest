@@ -1,45 +1,23 @@
 {
   "lenstest": {
     "releases": {
-      "1.0.0": [
-        {
-          "comment_text": "",
-          "digests": {
-            "md5": "7c3ee03666af063feb03ce02b498d093",
-            "sha256": "f561017d37402e0581f883f45a86f0c1abebfce9ec01b31dd38ea6dbd77c0457"
-          },
-          "downloads": -1,
-          "filename": "lenstest-1.0.0-py3-none-any.whl",
-          "has_sig": false,
-          "md5_digest": "7c3ee03666af063feb03ce02b498d093",
-          "packagetype": "bdist_wheel",
-          "python_version": "py3",
-          "requires_python": ">=3.9",
-          "size": 13123,
-          "upload_time": "2026-01-14T21:52:04.159439Z",
-          "upload_time_iso_8601": "2026-01-14T21:52:04.159439Z",
-          "url": "./lenstest-1.0.0-py3-none-any.whl",
-          "yanked": false,
-          "yanked_reason": null
-        }
-      ],
       "1.0.1": [
         {
           "comment_text": "",
           "digests": {
-            "md5": "719b81a339ecaf90d74181dabbbbd358",
-            "sha256": "48d352e0ab7ecd2f91ffd814a1f9970bcf358fee98281da6e751c228a8b8c777"
+            "md5": "68419d85ab37a58e1e7cc0612e42e95f",
+            "sha256": "74075c4f4a4e7842274ea6af96520663da25e62164ea017d5164c2c7a896244c"
           },
           "downloads": -1,
           "filename": "lenstest-1.0.1-py3-none-any.whl",
           "has_sig": false,
-          "md5_digest": "719b81a339ecaf90d74181dabbbbd358",
+          "md5_digest": "68419d85ab37a58e1e7cc0612e42e95f",
           "packagetype": "bdist_wheel",
           "python_version": "py3",
-          "requires_python": ">=3.9",
-          "size": 13117,
-          "upload_time": "2026-01-14T22:24:31.957710Z",
-          "upload_time_iso_8601": "2026-01-14T22:24:31.957710Z",
+          "requires_python": ">=3.10",
+          "size": 13140,
+          "upload_time": "2026-02-22T17:41:44.024342Z",
+          "upload_time_iso_8601": "2026-02-22T17:41:44.024342Z",
           "url": "./lenstest-1.0.1-py3-none-any.whl",
           "yanked": false,
           "yanked_reason": null
